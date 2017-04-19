@@ -7,6 +7,7 @@ libraries:=$(lib_BCCencode) $(lib_Process) $(lib_process_data)\
 	$(lib_typeDef) $(lib_globalVarINIT)
 
 CC:=gcc
+MV:=mv -u
 
 .PHONY:all $(libraries)
 all:$(libraries) Transmitter
@@ -26,6 +27,9 @@ Objects=mainbfBCC.o test.o $(lib_BCCencode)ccoding_byte.o $(lib_Process)bccInter
 		$(lib_typeDef)commonStructure.o $(lib_globalVarINIT)commonStructure.o
 Transmitter:$(Objects)
 	$(CC) -g $(Objects) -lm -o $@
+	$(MV)  $(lib_BCCencode)*.o $(lib_Process)*.o $(lib_process_data)*.o $(lib_typeDef)*.o\
+		$(lib_globalVarINIT)*.o *.o ./objs
+
 mainbfBCC.o:allHeaders.h
 	$(CC) -c -g mainbfBCC.c -o $@
 test.o:test.c
@@ -33,12 +37,13 @@ test.o:test.c
 
 .PHONY:clean
 clean:
-	-rm *.o
-	-rm $(lib_BCCencode)*.o
-	-rm $(lib_Process)*.o
-	-rm $(lib_process_data)*.o
-	-rm $(lib_typeDef)*.o
-	-rm $(lib_globalVarINIT)*.o
+	#-rm *.o
+	#-rm $(lib_BCCencode)*.o
+	#-rm $(lib_Process)*.o
+	#-rm $(lib_process_data)*.o
+	#-rm $(lib_typeDef)*.o
+	#-rm $(lib_globalVarINIT)*.o
+	-rm ./objs/*.o
 	-rm Transmitter
 	-rm csd_*.txt
 	-rm *_csd.txt
