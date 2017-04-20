@@ -7,7 +7,7 @@ libraries:=$(lib_BCCencode) $(lib_Process) $(lib_process_data)\
 	$(lib_typeDef) $(lib_globalVarINIT)
 
 CC:=gcc
-MV:=mv -u
+MV:=-mv -u
 
 .PHONY:all $(libraries)
 all:$(libraries) Transmitter
@@ -24,7 +24,7 @@ Objects=mainbfBCC.o test.o $(lib_BCCencode)ccoding_byte.o $(lib_Process)bccInter
 		$(lib_process_data)mcs_table_for_20M.o $(lib_process_data)process_data.o\
 		$(lib_process_data)BCC_encoder.o $(lib_process_data)Data_CSD.o $(lib_process_data)GenDataAndScramble.o\
 		$(lib_process_data)GenInit.o $(lib_process_data)modulate.o $(lib_process_data)PilotAdd_SubcarMap.o\
-		$(lib_typeDef)commonStructure.o $(lib_globalVarINIT)commonStructure.o
+		$(lib_typeDef)commonStructure.o $(lib_globalVarINIT)globalVarINIT.o
 Transmitter:$(Objects)
 	$(CC) -g $(Objects) -lm -o $@
 	$(MV)  $(lib_BCCencode)*.o $(lib_Process)*.o $(lib_process_data)*.o $(lib_typeDef)*.o\
