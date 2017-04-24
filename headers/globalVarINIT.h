@@ -38,7 +38,6 @@ extern int subcar;
 extern int N_tone;
 extern int N_pilot;
 
-#define AVX2
 #ifdef AVX2
 extern int csdTableForPreambleFlag;
 extern complex32 csdTableForPreamble[N_TX][64];

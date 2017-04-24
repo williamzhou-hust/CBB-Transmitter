@@ -124,7 +124,6 @@ int* shiftTableForHeLTF[8]={T_iss_CS1,T_iss_CS2,T_iss_CS3,T_iss_CS4,T_iss_CS5,T_
 
 #endif
 
-#define AVX2
 #ifdef AVX2
 int csdTableForPreambleFlag=0;
 complex32 csdTableForPreamble[N_TX][64]={{0,0}};

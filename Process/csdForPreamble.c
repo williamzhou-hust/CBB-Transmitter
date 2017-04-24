@@ -6,7 +6,6 @@
 #include "../headers/commonStructure.h"
 #include "../headers/globalVarINIT.h"
 
-#define AVX2
 #ifndef AVX2
 void csdForPreamble(complex32* pStreamBfcsd, complex32* pStreamAfcsd, int NTXindex, int length){
 	//printf("Not use AVX2!\n");

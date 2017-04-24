@@ -3,7 +3,6 @@
 #include "../headers/commonStructure.h"
 #include "../headers/globalVarINIT.h"
 
-#define AVX2
 #ifndef AVX2
 void csdForHeLTF(complex32* pStreamBfcsd, complex32* pStreamAfcsd, int NTXindex, int length){
      int n=length;

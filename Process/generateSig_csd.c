@@ -11,7 +11,6 @@ void generateSig_csd(complex32* basicSig, complex32* oneStreamOfSig, int NTXinde
      //MKSUREENMEM(psigAfterCSD);
      //memset(psigAfterCSD,0,64*sizeof(complex32));
      //CSD for LTF
-	 #define AVX2
 	 #ifndef AVX2
      csdForPreamble(basicSig+4, oneStreamOfSig+4, NTXindex, lengthAfterCSD);
 	 #else
