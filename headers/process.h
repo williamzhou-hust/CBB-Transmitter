@@ -33,7 +33,7 @@ extern void csdForPreamble(complex32* pStreamBfcsd,
                            complex32* pStreamAfcsd,
                            int NTXindex, int length);
 
-extern int csTableForPreamble(int Ntxindex);
+extern int tcsTableForPreamble(int Ntxindex);//change to tcd
 extern complex32 expComlex32(float phase, int i);
 
 extern void csdForHeLTF(complex32* pStreamBfcsd, complex32* pStreamAfcsd, int NTXindex, int length);

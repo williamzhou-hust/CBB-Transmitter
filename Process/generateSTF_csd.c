@@ -11,8 +11,13 @@ void generateSTF_csd(complex32* oneStreamOfSTF, int NTXindex){//int lengthofSTF
      //MKSUREENMEM(pstfAfterCSD);
      //memset(pstfAfterCSD,0,64*sizeof(complex32));
      //CSD for STF
+	 #define AVX2
+	 #ifndef AVX2
      csdForPreamble(basicSTF, oneStreamOfSTF+6, NTXindex, lengthAfterCSD);
-     //for test
+	 #else
+     csdForPreamble(basicSTF, oneStreamOfSTF, NTXindex, lengthAfterCSD);
+	 #endif
+	 //for test
      /*FILE* fp=fopen("stfAfterCSD.txt","w");
      printStreamToFile(pstfAfterCSD,64,fp);
      fclose(fp);*/
