@@ -62,6 +62,10 @@ extern void MapForSig(unsigned char* sigAfterBCC,
                       complex32* sigAfterMap,
                       int length);
 
+//AVX2
+/*use __m256i*/
+extern void Mult_complex32Vector_2(complex32* a, complex32* b, complex32* dest /*int lengthOfVector = 16*/);
+
 //for print
 extern void printForCpmlex(complex rp);
 extern void printForCpmlex32(complex32 rp);

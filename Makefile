@@ -28,7 +28,7 @@ Objects=mainbfBCC.o test.o $(lib_BCCencode)ccoding_byte.o $(lib_Process)bccInter
 Transmitter:$(Objects)
 	$(CC) -g $(Objects) -lm -o $@
 	$(MV)  $(lib_BCCencode)*.o $(lib_Process)*.o $(lib_process_data)*.o $(lib_typeDef)*.o\
-		$(lib_globalVarINIT)*.o *.o ./objs
+		$(lib_globalVarINIT)*.o $(lib_intrinsics)*.o *.o ./objs
 	./Transmitter
 	$(MV) csd_*.txt *_csd.txt ./dataForRun
 
