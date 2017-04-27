@@ -7,6 +7,7 @@ h4:=$(header_path)process.h
 h5:=$(header_path)process_data.h
 
 CC:=gcc
+CFLAGS:=-c -D AVX2
 vpath %.h header_path
 vpath %.c src_path
 
@@ -15,27 +16,27 @@ all:bccInterleaverForSig.o csdForHeLTF.o csdForPreamble.o generateBasicSig.o gen
 	generateLTF_csd.o generatePreamble_csd.o generateSig_csd.o generateSTF_csd.o MapForSig.o setSigInfo.o
 
 bccInterleaverForSig.o:$(h4)
-	$(CC) -c bccInterleaverForSig.c -o $@
+	$(CC) $(CFLAGS) bccInterleaverForSig.c -o $@
 csdForHeLTF.o:$(h1) $(h2) $(h4)
-	$(CC) -c csdForHeLTF.c -o $@
+	$(CC) $(CFLAGS) csdForHeLTF.c -o $@
 csdForPreamble.o:$(h1) $(h2) $(h4)
-	$(CC) -c csdForPreamble.c -o $@
+	$(CC) $(CFLAGS) csdForPreamble.c -o $@
 generateBasicSig.o:$(h1) $(h2) $(h4)
-	$(CC) -c generateBasicSig.c -o $@
+	$(CC) $(CFLAGS) generateBasicSig.c -o $@
 generateHeLTF_csd.o:$(h1) $(h2) $(h3) $(h4)
-	$(CC) -c generateHeLTF_csd.c -o $@
+	$(CC) $(CFLAGS) generateHeLTF_csd.c -o $@
 generateLTF_csd.o:$(h1) $(h2) $(h4)
-	$(CC) -c generateLTF_csd.c -o $@
+	$(CC) $(CFLAGS) generateLTF_csd.c -o $@
 generatePreamble_csd.o:$(h1) $(h2) $(h4)
-	$(CC) -c generatePreamble_csd.c -o $@
+	$(CC) $(CFLAGS) generatePreamble_csd.c -o $@
 generateSig_csd.o:$(h1) $(h2) $(h4)
-	$(CC) -c generateSig_csd.c -o $@
+	$(CC) $(CFLAGS) generateSig_csd.c -o $@
 generateSTF_csd.o:$(h1) $(h2) $(h4)
-	$(CC) -c generateSTF_csd.c -o $@
+	$(CC) $(CFLAGS) generateSTF_csd.c -o $@
 MapForSig.o:$(h1) $(h2) $(h4)
-	$(CC) -c MapForSig.c -o $@
+	$(CC) $(CFLAGS) MapForSig.c -o $@
 setSigInfo.o:$(h4)
-	$(CC) -c setSigInfo.c -o $@
+	$(CC) $(CFLAGS) setSigInfo.c -o $@
 
 .PHONY:clean
 clean:

@@ -38,4 +38,11 @@ extern int subcar;
 extern int N_tone;
 extern int N_pilot;
 
+#ifdef AVX2
+extern int csdTableForPreambleFlag;
+extern complex32 csdTableForPreamble[N_TX][64];
+extern int csdTableForHeLTFFlag;
+extern complex32 csdTableForHeLTF[N_TX][256];
+#endif
+
 #endif // HEADGLOBALVAR

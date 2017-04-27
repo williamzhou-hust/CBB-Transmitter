@@ -68,8 +68,8 @@ int main(int argc, char* argv[]){
     int j;
     FILE *a=fopen("csd_data_real.txt","wt");                                       //将结果写入文件
     FILE *b=fopen("csd_data_imag.txt","wt");
-    for(i=1;i<=N_STS;i++)for(j=1;j<=(subcar*N_SYM);j++)fprintf(a,"%d\n",csd_data[i-1][j-1].real);
-    for(i=1;i<=N_STS;i++)for(j=1;j<=(subcar*N_SYM);j++)fprintf(b,"%d\n",csd_data[i-1][j-1].imag);
+    for(i=1;i<=N_STS;i++)for(j=1;j<=(subcar*N_SYM);j++)fprintf(a,"%d\r\n",csd_data[i-1][j-1].real);
+    for(i=1;i<=N_STS;i++)for(j=1;j<=(subcar*N_SYM);j++)fprintf(b,"%d\r\n",csd_data[i-1][j-1].imag);
     fclose(a);
     fclose(b);
     
@@ -132,7 +132,7 @@ void printStream(complex32* pData, int length){
 void printStreamToFile(complex32* pData, int length, FILE* fp){
     int n=length;
     while(n--){
-        fprintf(fp,"%d %d\n",pData->real,pData->imag);
+        fprintf(fp,"%d %d\r\n",pData->real,pData->imag);
         ++pData;
     }
 }

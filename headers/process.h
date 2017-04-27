@@ -33,7 +33,7 @@ extern void csdForPreamble(complex32* pStreamBfcsd,
                            complex32* pStreamAfcsd,
                            int NTXindex, int length);
 
-extern int csTableForPreamble(int Ntxindex);
+extern int tcsTableForPreamble(int Ntxindex);//change to tcd
 extern complex32 expComlex32(float phase, int i);
 
 extern void csdForHeLTF(complex32* pStreamBfcsd, complex32* pStreamAfcsd, int NTXindex, int length);
@@ -61,6 +61,10 @@ extern void bccInterleaverForSig(unsigned char* sigAfterBCC, int length);
 extern void MapForSig(unsigned char* sigAfterBCC,
                       complex32* sigAfterMap,
                       int length);
+
+//AVX2
+/*use __m256i*/
+extern void Mult_complex32Vector_2(complex32* a, complex32* b, complex32* dest /*int lengthOfVector = 16*/);
 
 //for print
 extern void printForCpmlex(complex rp);
