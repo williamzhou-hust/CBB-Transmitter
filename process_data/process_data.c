@@ -78,7 +78,14 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
         }
     }
 */
+#ifndef AVX2
     Data_CSD(subcar_map_data, N_SYM, csd_data);
+#else
+    Data_CSD(subcar_map_data, N_SYM, 0, csd_data);
+    Data_CSD(subcar_map_data, N_SYM, 1, csd_data);
+    Data_CSD(subcar_map_data, N_SYM, 2, csd_data);
+    Data_CSD(subcar_map_data, N_SYM, 3, csd_data);
+#endif
 
     for(i=0;i<N_STS;i++)
     {

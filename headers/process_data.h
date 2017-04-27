@@ -21,6 +21,10 @@ extern void modulate(unsigned char **code_out , int BCC_length, int N_SYM, compl
 //≤Â»Îµº∆µ¡„∆µ
 extern void PilotAdd_SubcarMap(complex32 **sym_mod, int N_SYM, complex32 **subcar_map_data);
 //CSD
+#ifndef AVX2
 extern void Data_CSD(complex32 **subcar_map_data, int N_SYM, complex32 **csd_data);
+#else
+extern void Data_CSD(complex32 **subcar_map_data, int N_SYM, int iss, complex32 **csd_data);
+#endif
 
 #endif // PROCESS_DATA
