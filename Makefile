@@ -8,6 +8,7 @@ libraries:=$(lib_BCCencode) $(lib_Process) $(lib_process_data)\
 
 CC:=gcc
 MV:=-mv -u
+CFLAGS:=-c -D OPTIMIZATION=0
 
 .PHONY:all $(libraries)
 all:$(libraries) Transmitter
@@ -31,7 +32,7 @@ Transmitter:$(Objects)
 		$(lib_globalVarINIT)*.o *.o ./objs
 
 mainbfBCC.o:allHeaders.h
-	$(CC) -c -g mainbfBCC.c -o $@
+	$(CC) $(CFLAGS) -g mainbfBCC.c -o $@
 test.o:test.c
 	$(CC) -c $< -o $@
 

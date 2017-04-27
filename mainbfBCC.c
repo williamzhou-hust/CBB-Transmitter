@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
+#include <time.h>
 #include <math.h>
 #include "allHeaders.h"
 
@@ -8,11 +9,6 @@
 #ifdef RUNBFCSD
 
 int main(int argc, char* argv[]){
-    //#define DEBUGSTABLE
-    #ifdef DEBUGSTABLE
-    int n=10000;
-    while(n--){
-    #endif
     complex32* STF[N_TX];
     complex32* LTF[N_TX];
     complex32* Sig[N_TX];
@@ -63,7 +59,26 @@ int main(int argc, char* argv[]){
         csd_data[i] = (complex32 *)malloc(sizeof(complex32)*(subcar*N_SYM));
         MKSUREENMEM(csd_data[i]);
     }
-    GenerateData(databits, csd_data);
+	
+	//generate data
+	time_t start_time=clock();
+    #define DEBUGSTABLE
+    #ifdef DEBUGSTABLE
+    int n=100000;
+    while(n--){
+    #endif
+		GenerateData(databits, csd_data);
+    #ifdef DEBUGSTABLE
+    }
+    #endif
+	time_t end_time=clock();
+	if(OPTIMIZATION){
+		printf("OPTIMIZATION! use time: %fs\n",(double)(end_time-start_time)/CLOCKS_PER_SEC);
+	}
+	else{
+		printf("NOT USE OPTIMIZATION! use time: %fs\n",(double)(end_time-start_time)/CLOCKS_PER_SEC);
+	}
+
     //save data
     int j;
     FILE *a=fopen("csd_data_real.txt","wt");                                       //将结果写入文件
@@ -90,7 +105,6 @@ int main(int argc, char* argv[]){
     for(i=0;i<N_TX;i++) printStreamToFile(heLTF[i],n_ltf*256,fp);
     fclose(fp);
 	
-	
     //free malloc data
     for(i=0;i<N_TX;i++) free(STF[i]);
     for(i=0;i<N_TX;i++) free(LTF[i]);
@@ -99,9 +113,6 @@ int main(int argc, char* argv[]){
     for(i=0;i<N_STS;i++) free(csd_data[i]);
     free(databits);
 	
-    #ifdef DEBUGSTABLE
-    }
-    #endif
     //main return
     return 0;
 }
