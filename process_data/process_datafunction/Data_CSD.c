@@ -33,15 +33,13 @@ void Data_CSD(complex32 **subcar_map_data, int N_SYM, complex32 **csd_data)
     }
 }
 #else
-void Data_CSD(complex32 **subcar_map_data, int N_SYM, complex32 **csd_data){
+void Data_CSD(complex32 **subcar_map_data, int N_SYM, int iss, complex32 **csd_data){
 	if(!csdTableForHeLTFFlag)
 		initcsdTableForHeLTF();
-	int i=0,j=0,n=0;
-	for(i=0;i<N_STS;i++){
-		for(n=0;n<N_SYM;n++){
-			for(j=0;j<16;j++){
-				Mult_complex32Vector_2(&subcar_map_data[i][n*256]+j*16,&csdTableForHeLTF[i][j*16],&csd_data[i][n*256]+j*16);
-			}
+	int i=iss,j=0,n=0;
+	for(n=0;n<N_SYM;n++){
+		for(j=0;j<16;j++){
+			Mult_complex32Vector_2(&subcar_map_data[i][n*256]+j*16,&csdTableForHeLTF[i][j*16],&csd_data[i][n*256]+j*16);
 		}
 	}
 }

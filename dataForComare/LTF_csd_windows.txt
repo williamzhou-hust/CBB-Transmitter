@@ -3,7 +3,6 @@
 0 0
 0 0
 0 0
-0 0
 8192 0
 8192 0
 -8192 0
@@ -254,3 +253,4 @@
 0 0
 0 0
 0 0
+>>>>>>> 67ef782d3d2c8e0da068c9b55cbea48ad087c4b5:dataForComare/LTF_csd_windows.txt
