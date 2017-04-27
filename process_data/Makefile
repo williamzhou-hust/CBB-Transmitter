@@ -6,7 +6,7 @@ h3:=$(header_path)integerTypeDef.h
 h4:=$(header_path)process.h
 h5:=$(header_path)process_data.h
 
-CFLAGS:=-c 
+CFLAGS:=-c -D AVX2 
 CC:=gcc
 vpath %.h header_path
 vpath %.c .

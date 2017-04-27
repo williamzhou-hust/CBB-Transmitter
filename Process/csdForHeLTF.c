@@ -35,6 +35,5 @@ void csdForHeLTF(complex32* pStreamBfcsd, complex32* pStreamAfcsd, int NTXindex,
 	for(i=0;i<16;i++){
 		Mult_complex32Vector_2(pStreamBfcsd+i*16,&csdTableForHeLTF[NTXindex][i*16],pStreamAfcsd+i*16);
 	}
-	//free(pStreamBfcsd_expan);
 }
 #endif
