@@ -45,4 +45,18 @@ extern int csdTableForHeLTFFlag;
 extern complex32 csdTableForHeLTF[N_TX][256];
 #endif
 
+#ifdef OPTIMIZATION
+typedef struct BCCStruct{
+unsigned char output[16];
+unsigned char endstate;
+}BCCStruct_t;
+extern BCCStruct_t BCCTable[256][128];
+typedef struct Scramble
+{
+    unsigned char data_out;
+    unsigned char reg_out;
+}Scramble_t;
+extern Scramble_t ChartTable[256][128];
+#endif
+
 #endif // HEADGLOBALVAR

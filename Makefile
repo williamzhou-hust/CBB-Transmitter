@@ -9,6 +9,7 @@ libraries:=$(lib_BCCencode) $(lib_Process) $(lib_process_data)\
 
 CC:=gcc
 MV:=-mv -u
+CFLAGS:=-c -D OPTIMIZATION
 
 .PHONY:all $(libraries)
 all:$(libraries) Transmitter
@@ -33,20 +34,20 @@ Transmitter:$(Objects)
 	$(MV) csd_*.txt *_csd.txt ./dataForRun
 
 mainbfBCC.o:allHeaders.h
-	$(CC) -c -g mainbfBCC.c -o $@
+	$(CC) $(CFLAGS) -g mainbfBCC.c -o $@
 test.o:test.c
 	$(CC) -c $< -o $@
 
 .PHONY:clean
 clean:
-	#-rm *.o
-	#-rm $(lib_BCCencode)*.o
-	#-rm $(lib_Process)*.o
-	#-rm $(lib_process_data)*.o
-	#-rm $(lib_typeDef)*.o
-	#-rm $(lib_globalVarINIT)*.o
-	#-rm $(lib_intrinsics)*.o
+	-rm *.o
+	-rm $(lib_BCCencode)*.o
+	-rm $(lib_Process)*.o
+	-rm $(lib_process_data)*.o
+	-rm $(lib_typeDef)*.o
+	-rm $(lib_globalVarINIT)*.o
+	-rm $(lib_intrinsics)*.o
 	-rm ./objs/*.o
 	-rm Transmitter
-	#-rm csd_*.txt
-	#-rm *_csd.txt
+	-rm csd_*.txt
+	-rm *_csd.txt

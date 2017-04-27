@@ -25,7 +25,12 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
         }
     }
 
+	#ifndef OPTIMIZATION
     BCC_encoder(data_scramble, ScrLength, N_SYM, code_out, CodeLength);
+	#else
+	//printf("use OPT BCC!\n");
+    BCC_encoder_OPT(data_scramble, ScrLength, N_SYM, code_out, CodeLength);
+	#endif
 
     free(data_scramble);
     data_scramble = NULL;
@@ -78,8 +83,13 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
         }
     }
 */
+	#ifndef AVX2
     Data_CSD(subcar_map_data, N_SYM, csd_data);
-
+	#else
+	for(i=0;i<N_STS;i++){
+		__Data_CSD_aux(subcar_map_data, N_SYM, csd_data,i);
+	}
+	#endif
     for(i=0;i<N_STS;i++)
     {
         free(subcar_map_data[i]);

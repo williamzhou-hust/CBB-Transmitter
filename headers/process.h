@@ -55,6 +55,14 @@ extern void ccodedot11_encode (unsigned int numbytes,
 		                       unsigned char *inPtr,
 		                       unsigned char *outPtr,
                                unsigned char puncturing);
+#ifdef OPTIMIZATION
+extern void init_BCCencode_table();
+extern void check_BCCcode(unsigned int numbytes,
+		   unsigned char *inPtr,
+		   unsigned char *outPtr,
+		   unsigned char initstate,
+		   unsigned char puncturing);
+#endif
 
 extern void bccInterleaverForSig(unsigned char* sigAfterBCC, int length);
 
