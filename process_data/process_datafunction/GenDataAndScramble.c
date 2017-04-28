@@ -12,7 +12,7 @@ unsigned char GetBit(unsigned char buf, int n);  //have been tested
 Scramble_t ChartTable[256][128];
 void Creatnewchart()
 {
-	printf("use OPT scramble!\n");
+	//printf("use OPT scramble!\n");
 	void __GenDataAndScramble_aux(unsigned char *data_scramble, unsigned char databits, unsigned char Reg,unsigned char *Reg_out);
     unsigned char i,j;
     i=0;

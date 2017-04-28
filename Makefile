@@ -24,7 +24,7 @@ Objects=mainbfBCC.o test.o $(lib_BCCencode)ccoding_byte.o $(lib_Process)bccInter
 		$(lib_Process)MapForSig.o $(lib_Process)setSigInfo.o\
 		$(lib_process_data)mcs_table_for_20M.o $(lib_process_data)process_data.o\
 		$(lib_process_data)BCC_encoder.o $(lib_process_data)Data_CSD.o $(lib_process_data)GenDataAndScramble.o\
-		$(lib_process_data)GenInit.o $(lib_process_data)modulate.o $(lib_process_data)PilotAdd_SubcarMap.o\
+		$(lib_process_data)GenInit.o $(lib_process_data)modulate.o $(lib_process_data)modulate_opt.o $(lib_process_data)PilotAdd_SubcarMap.o\
 		$(lib_typeDef)commonStructure.o $(lib_globalVarINIT)globalVarINIT.o $(lib_intrinsics)intrinsics_interface.o
 Transmitter:$(Objects)
 	$(CC) -g $(Objects) -lm -o $@

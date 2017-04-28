@@ -259,7 +259,7 @@ void parser_stream_interweave(unsigned char *output,unsigned int **stream_interw
     int N_tail = 6;
     int N_SYM = ceil(((double)(8*APEP_LEN + N_service + N_tail*N_ES) / (double)N_DBPS));
     int N_CBPSS = N_CBPS/N_STS;
-    unsigned int TableLength = N_CBPSS+pilot_N+zero_N;
+    int TableLength = N_CBPSS+pilot_N+zero_N;
     int i,j,k;
     for(k=0; k<N_SYM; k++)
     {
@@ -358,8 +358,9 @@ void __Modulation_11ax_opt(unsigned int **code_out, int mode,int num, complex32 
 
 void modulate_mapping(unsigned char *BCC_output, complex32 **subcar_map_data)
 {
-    int i;
+	//printf("use Optmodulate!\n");
 
+    int i;
     unsigned char rate_type;
     int N_BPSCS, N_DBPS, N_CBPS, N_ES;
     mcs_table_for_20M(&rate_type, &N_BPSCS, &N_DBPS, &N_CBPS, &N_ES);
