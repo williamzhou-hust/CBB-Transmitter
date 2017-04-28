@@ -67,15 +67,16 @@ int main(int argc, char* argv[]){
 		#ifdef OPTIMIZATION
 		Creatnewchart();
 		init_BCCencode_table();
+		initial_streamwave_table();
 		#endif
 		isPreAndHeLTFVauled=1;
 	}//end of isPreAndHeLTFValued
 
 	//generate data
 	time_t start_time=clock();
-    #define DEBUGSTABLE
+    //#define DEBUGSTABLE
     #ifdef DEBUGSTABLE
-    int n=10000;
+    int n=1000000;
     while(n--){
     #endif
 		GenerateData(databits, csd_data);

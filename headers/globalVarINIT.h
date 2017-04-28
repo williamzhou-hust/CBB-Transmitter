@@ -59,4 +59,12 @@ typedef struct Scramble
 extern Scramble_t ChartTable[256][128];
 #endif
 
+//interleaver table
+extern unsigned int *streamweave_table[N_STS]; /**< 含导频的分流交织表 */
+extern complex32 QAM1[2];
+extern complex32 QAM2[4];
+extern complex32 QAM4[16];
+extern complex32 QAM8[64];
+extern complex32 QAM16[256];
+
 #endif // HEADGLOBALVAR

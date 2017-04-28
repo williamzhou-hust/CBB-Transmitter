@@ -13,7 +13,7 @@ vpath %.c .
 vpath %.c process_datafunction
 
 .PHONY:all
-all:mcs_table_for_20M.o process_data.o BCC_encoder.o Data_CSD.o GenDataAndScramble.o GenInit.o modulate.o PilotAdd_SubcarMap.o
+all:mcs_table_for_20M.o process_data.o BCC_encoder.o Data_CSD.o GenDataAndScramble.o GenInit.o modulate.o modulate_opt.o PilotAdd_SubcarMap.o
 
 mcs_table_for_20M.o:$(h2)
 	$(CC) $(CFLAGS) mcs_table_for_20M.c -o $@
@@ -29,6 +29,8 @@ Data_CSD.o:$(src_path)Data_CSD.c $(h1) $(h2) $(h5)
 	$(CC) $(CFLAGS) $(src_path)Data_CSD.c -o $@
 modulate.o:$(src_path)modulate.c $(h1) $(h2) $(h5)
 	$(CC) $(CFLAGS) $(src_path)modulate.c -o $@
+modulate_opt.o:$(src_path)modulate_opt.c $(h1) $(h2) $(h5)
+	$(CC) $(CFLAGS) $(src_path)modulate_opt.c -o $@
 PilotAdd_SubcarMap.o:$(src_path)PilotAdd_SubcarMap.c $(h1) $(h2)
 	$(CC) $(CFLAGS) $(src_path)PilotAdd_SubcarMap.c -o $@
 

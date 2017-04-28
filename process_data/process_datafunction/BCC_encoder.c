@@ -172,7 +172,9 @@ void BCC_encoder_OPT(unsigned char *data_scramble, int ScrLength, int N_SYM, uns
     //ccodedot11_encode (numbytes, inPtr, outPtr, rate_type);
 	unsigned char initstate=0;
 	check_BCCcode(numbytes,inPtr,outPtr,initstate,rate_type);
+	*code_out=output;
 
+	/*
     int i,j,k;
     int s,S,i_ss,k1;
     int floor1,floor2;
@@ -303,6 +305,8 @@ void BCC_encoder_OPT(unsigned char *data_scramble, int ScrLength, int N_SYM, uns
         free(BCC_stream_parser[i-1]);
         BCC_stream_parser[i-1] = NULL;
     }
-
+*/
 }
+
+
 #endif
