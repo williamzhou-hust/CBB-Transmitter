@@ -78,6 +78,7 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
 
 	#ifdef OPTIMIZATION
 	modulate_mapping(BCCencodeout,subcar_map_data);
+	free(BCCencodeout);
 	#endif
 
     //////////////////////////////////////////////////////////////////////////////
