@@ -1,53 +1,104 @@
-lib_BCCencode:=./BCCencode/
-lib_Process:=./Process/
-lib_process_data:=./process_data/
-lib_typeDef:=./typeDef/
-lib_globalVarINIT:=./VarINIT/
-lib_intrinsics:=./intrinsics_interface/
-libraries:=$(lib_BCCencode) $(lib_Process) $(lib_process_data)\
-	$(lib_typeDef) $(lib_globalVarINIT) $(lib_intrinsics)
+#   BSD LICENSE
+#
+#   Copyright(c) 2010-2014 Intel Corporation. All rights reserved.
+#   All rights reserved.
+#
+#   Redistribution and use in source and binary forms, with or without
+#   modification, are permitted provided that the following conditions
+#   are met:
+#
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in
+#       the documentation and/or other materials provided with the
+#       distribution.
+#     * Neither the name of Intel Corporation nor the names of its
+#       contributors may be used to endorse or promote products derived
+#       from this software without specific prior written permission.
+#
+#   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+#   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+#   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+#   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+#   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+#   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+export RTE_SDK ?=/home/yujiamanong/Desktop/dpdk-stable-16.11.1
+ifeq ($(RTE_SDK),)
+$(error "Please define RTE_SDK environment variable")
+endif
 
-CC:=gcc
-MV:=-mv -u
-CFLAGS:=-c -D OPTIMIZATION
+# Default target, can be overridden by command line or environment
+RTE_TARGET ?= x86_64-native-linuxapp-gcc
 
-.PHONY:all $(libraries)
-all:$(libraries) Transmitter
-$(libraries):
-	$(MAKE) --directory=$@
+include $(RTE_SDK)/mk/rte.vars.mk
 
-vpath %.o libraries
-Objects=mainbfBCC.o test.o $(lib_BCCencode)ccoding_byte.o $(lib_Process)bccInterleaverForSig.o\
-		$(lib_Process)csdForHeLTF.o $(lib_Process)csdForPreamble.o $(lib_Process)generateBasicSig.o\
-		$(lib_Process)generateHeLTF_csd.o $(lib_Process)generateLTF_csd.o\
-		$(lib_Process)generatePreamble_csd.o $(lib_Process)generateSig_csd.o $(lib_Process)generateSTF_csd.o\
-		$(lib_Process)MapForSig.o $(lib_Process)setSigInfo.o\
-		$(lib_process_data)mcs_table_for_20M.o $(lib_process_data)process_data.o\
-		$(lib_process_data)BCC_encoder.o $(lib_process_data)Data_CSD.o $(lib_process_data)GenDataAndScramble.o\
-		$(lib_process_data)GenInit.o $(lib_process_data)modulate.o $(lib_process_data)PilotAdd_SubcarMap.o\
-		$(lib_typeDef)commonStructure.o $(lib_globalVarINIT)globalVarINIT.o $(lib_intrinsics)intrinsics_interface.o
-Transmitter:$(Objects)
-	$(CC) -g $(Objects) -lm -o $@
-	$(MV)  $(lib_BCCencode)*.o $(lib_Process)*.o $(lib_process_data)*.o $(lib_typeDef)*.o\
-		$(lib_globalVarINIT)*.o $(lib_intrinsics)*.o *.o ./objs
-	./Transmitter
-	$(MV) csd_*.txt *_csd.txt ./dataForRun
+# binary name
+APP = CBB-Transmiter
 
-mainbfBCC.o:allHeaders.h
-	$(CC) $(CFLAGS) -g mainbfBCC.c -o $@
-test.o:test.c
-	$(CC) -c $< -o $@
+VPATH += $(SRCDIR)/BCCencode
+#VPATH += $(SRCDIR)/IFFT
+VPATH += $(SRCDIR)/intrinsics_interface
+VPATH += $(SRCDIR)/Process
+VPATH += $(SRCDIR)/process_data
+VPATH += $(SRCDIR)/process_data/process_datafunction
+VPATH += $(SRCDIR)/typeDef
+VPATH += $(SRCDIR)/VarINIT
 
-.PHONY:clean
-clean:
-	-rm *.o
-	-rm $(lib_BCCencode)*.o
-	-rm $(lib_Process)*.o
-	-rm $(lib_process_data)*.o
-	-rm $(lib_typeDef)*.o
-	-rm $(lib_globalVarINIT)*.o
-	-rm $(lib_intrinsics)*.o
-	-rm ./objs/*.o
-	-rm Transmitter
-	-rm csd_*.txt
-	-rm *_csd.txt
+# all source are stored in SRCS-y
+SRCS-y := main.c mainbfBCC.c test.c
+SRCS-y += ccoding_byte.c
+
+#SRCS-y += ifft.c ifftShiftandIFFTPreamble.c
+
+SRCS-y += intrinsics_interface_v2.c
+
+SRCS-y += bccInterleaverForSig.c csdForHeLTF.c csdForPreamble.c
+SRCS-y += generateBasicSig.c generateHeLTF_csd.c generateLTF_csd.c
+SRCS-y += generatePreamble_csd.c generateSig_csd.c generateSTF_csd.c
+SRCS-y += MapForSig.c setSigInfo.c
+
+SRCS-y += mcs_table_for_20M.c process_data.c
+SRCS-y += BCC_encoder.c Data_CSD.c GenDataAndScramble.c
+SRCS-y += GenInit.c modulate.c modulate_opt.c PilotAdd_SubcarMap.c
+
+SRCS-y += commonStructure.c
+
+SRCS-y += globalVarINIT.c
+
+CFLAGS += -O3
+CFLAGS += -I$(SRCDIR)/BCCencode
+#CFLAGS += -I$(SRCDIR)/IFFT
+CFLAGS += -I$(SRCDIR)/intrinsics_interface
+CFLAGS += -I$(SRCDIR)/Process
+CFLAGS += -I$(SRCDIR)/process_data
+CFLAGS += -I$(SRCDIR)/process_data/process_datafunction
+CFLAGS += -I$(SRCDIR)/typeDef
+CFLAGS += -I$(SRCDIR)/VarINIT
+
+CFLAGS += -D OPTIMIZATION
+#CFLAGS += $(WERROR_FLAGS)
+
+#LDLIBS += -L$(subst main,print_abcd,$(RTE_OUTPUT))/lib
+#LDLIBS += -L$(RTE_EXLIB_CBB)/BCCencode/$(RTE_TARGET)/lib
+#LDLIBS += -L$(RTE_EXLIB_CBB)/IFFT/$(RTE_TARGET)/lib
+#LDLIBS += -L$(RTE_EXLIB_CBB)/intrinsics_interface/$(RTE_TARGET)/lib
+#LDLIBS += -L$(RTE_EXLIB_CBB)/Process/$(RTE_TARGET)/lib
+#LDLIBS += -L$(RTE_EXLIB_CBB)/process_data/$(RTE_TARGET)/lib
+#LDLIBS += -L$(RTE_EXLIB_CBB)/typeDef/$(RTE_TARGET)/lib
+#LDLIBS += -L$(RTE_EXLIB_CBB)/VarINIT/$(RTE_TARGET)/lib
+
+#LDLIBS += -lBCCencode
+#LDLIBS += -lIFFT
+#LDLIBS += -lintrinsics_interface
+#LDLIBS += -lProcess
+#LDLIBS += -lprocess_data
+#LDLIBS += -ltypeDef
+#LDLIBS += -lVarINIT
+#$(info "Please $(RTE_OUTPUT)")
+include $(RTE_SDK)/mk/rte.extapp.mk
