@@ -74,9 +74,9 @@ int main(int argc, char* argv[]){
 
 	//generate data
 	time_t start_time=clock();
-    //#define DEBUGSTABLE
+    #define DEBUGSTABLE
     #ifdef DEBUGSTABLE
-    int n=1000000;
+    int n=100000;
     while(n--){
     #endif
 		GenerateData(databits, csd_data);
