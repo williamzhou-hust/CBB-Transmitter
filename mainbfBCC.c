@@ -5,16 +5,26 @@
 #include <time.h>
 #include "allHeaders.h"
 
+#include <rte_eal.h>
+#include <rte_debug.h>
+
 #define RUNBFCSD
 #ifdef RUNBFCSD
 
 int isPreAndHeLTFVauled=0;
 
 int main(int argc, char* argv[]){
+	int ret;
+
+	ret = rte_eal_init(argc, argv);
+	if (ret < 0)
+		rte_panic("Cannot init EAL\n");
+	
 	complex32* STF[N_TX];
     complex32* LTF[N_TX];
 	complex32* Sig[N_TX];
 	complex32* heLTF[N_TX];
+
 	unsigned char* databits=(unsigned char*)malloc(APEP_LEN*sizeof(unsigned char));
 	complex32 *csd_data[N_STS];
 	int n_ltf=0;
@@ -51,8 +61,11 @@ int main(int argc, char* argv[]){
 	    //传入数据databits
 	    FILE *fp=fopen("send_din_dec.txt","rt");
 	    unsigned int datatmp=0;
+	    int ret_send_din;
 	    for(i=0;i<APEP_LEN;i++){
-	            fscanf(fp,"%ud",&datatmp);
+	            ret_send_din = fscanf(fp,"%ud",&datatmp);
+	            if(ret_send_din < 0)
+	            	printf("ret_send_din = %d",ret_send_din);
 	            databits[i]=datatmp&0x000000FF;
 	    }
 	    fclose(fp);
