@@ -53,14 +53,4 @@ dep_mainbfBCC.o = /home/yujiamanong/Desktop/test/CBB-Transmitter/mainbfBCC.c \
  /home/yujiamanong/Desktop/test/CBB-Transmitter/./headers/integerTypeDef.h \
  /home/yujiamanong/Desktop/test/CBB-Transmitter/./headers/process.h \
  /home/yujiamanong/Desktop/test/CBB-Transmitter/./headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/./headers/process_data.h \
- /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_eal.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h /usr/include/stdint.h \
- /usr/include/x86_64-linux-gnu/bits/wchar.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/sched.h \
- /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_per_lcore.h \
- /usr/include/pthread.h /usr/include/x86_64-linux-gnu/bits/setjmp.h \
- /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
- /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_debug.h \
- /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_log.h \
- /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_branch_prediction.h
+ /home/yujiamanong/Desktop/test/CBB-Transmitter/./headers/process_data.h
