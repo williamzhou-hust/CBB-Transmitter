@@ -1,5 +1,5 @@
 dep_intrinsics_interface_v2.o = \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/intrinsics_interface/intrinsics_interface_v2.c \
+ /home/yujiamanong/Desktop/test/intrinsics_interface/intrinsics_interface_v2.c \
  /usr/include/stdc-predef.h \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/immintrin.h \
@@ -69,7 +69,7 @@ dep_intrinsics_interface_v2.o = \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
  /usr/include/x86_64-linux-gnu/bits/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/stdio2.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/intrinsics_interface/../headers/process.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/intrinsics_interface/../headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/intrinsics_interface/../headers/integerTypeDef.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/intrinsics_interface/../headers/commonStructure.h
+ /home/yujiamanong/Desktop/test/intrinsics_interface/../headers/process.h \
+ /home/yujiamanong/Desktop/test/intrinsics_interface/../headers/commonStructure.h \
+ /home/yujiamanong/Desktop/test/intrinsics_interface/../headers/integerTypeDef.h \
+ /home/yujiamanong/Desktop/test/intrinsics_interface/../headers/commonStructure.h

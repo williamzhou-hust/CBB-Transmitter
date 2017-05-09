@@ -84,13 +84,16 @@ int main(int argc, char* argv[]){
     }
     #endif
 	time_t end_time=clock();
-	if(OPTIMIZATION){
+	//if(OPTIMIZATION){
+	#ifdef OPTIMIZATION
 		printf("OPTIMIZATION! use time: %fs\n",(double)(end_time-start_time)/CLOCKS_PER_SEC);
-	}
-	else{
+	//}
+	//else{
+	#else
 		printf("NOT USE OPTIMIZATION! use time: %fs\n",(double)(end_time-start_time)/CLOCKS_PER_SEC);
-	}
-	
+	//}
+	#endif
+		
     //save data
     int i,j;
     FILE *a=fopen("csd_data_real.txt","wt");                                       //将结果写入文件

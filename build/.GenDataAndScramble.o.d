@@ -1,5 +1,5 @@
 dep_GenDataAndScramble.o = \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/GenDataAndScramble.c \
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/GenDataAndScramble.c \
  /usr/include/stdc-predef.h \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
  /usr/include/stdlib.h /usr/include/features.h \
@@ -35,6 +35,6 @@ dep_GenDataAndScramble.o = \
  /usr/include/xlocale.h /usr/include/x86_64-linux-gnu/bits/string.h \
  /usr/include/x86_64-linux-gnu/bits/string2.h \
  /usr/include/x86_64-linux-gnu/bits/string3.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/../../headers/globalVarINIT.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/../../headers/../headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/../../headers/../headers/integerTypeDef.h
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/../../headers/globalVarINIT.h \
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/../../headers/../headers/commonStructure.h \
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/../../headers/../headers/integerTypeDef.h

@@ -1,5 +1,5 @@
 dep_GenInit.o = \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/GenInit.c \
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/GenInit.c \
  /usr/include/stdc-predef.h \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
  /usr/include/math.h /usr/include/features.h \
@@ -17,8 +17,8 @@ dep_GenInit.o = \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
  /usr/include/x86_64-linux-gnu/bits/mathinline.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/../../headers/globalVarINIT.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/../../headers/../headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/../../headers/../headers/integerTypeDef.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/../../headers/process_data.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_datafunction/../../headers/commonStructure.h
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/../../headers/globalVarINIT.h \
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/../../headers/../headers/commonStructure.h \
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/../../headers/../headers/integerTypeDef.h \
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/../../headers/process_data.h \
+ /home/yujiamanong/Desktop/test/process_data/process_datafunction/../../headers/commonStructure.h

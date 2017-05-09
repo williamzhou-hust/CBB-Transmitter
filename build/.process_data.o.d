@@ -1,5 +1,5 @@
 dep_process_data.o = \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/process_data.c \
+ /home/yujiamanong/Desktop/test/process_data/process_data.c \
  /usr/include/stdc-predef.h \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
  /usr/include/stdio.h /usr/include/features.h \
@@ -32,9 +32,9 @@ dep_process_data.o = \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/../headers/globalVarINIT.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/../headers/../headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/../headers/../headers/integerTypeDef.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/../headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/../headers/process_data.h \
- /home/yujiamanong/Desktop/test/CBB-Transmitter/process_data/../headers/commonStructure.h
+ /home/yujiamanong/Desktop/test/process_data/../headers/globalVarINIT.h \
+ /home/yujiamanong/Desktop/test/process_data/../headers/../headers/commonStructure.h \
+ /home/yujiamanong/Desktop/test/process_data/../headers/../headers/integerTypeDef.h \
+ /home/yujiamanong/Desktop/test/process_data/../headers/commonStructure.h \
+ /home/yujiamanong/Desktop/test/process_data/../headers/process_data.h \
+ /home/yujiamanong/Desktop/test/process_data/../headers/commonStructure.h
