@@ -1,4 +1,4 @@
-dep_mainbfBCC.o = /home/yujiamanong/Desktop/test/mainbfBCC.c \
+dep_mainbfBCC.o = /home/yujiamanong/Desktop/CBB-Transmitter/mainbfBCC.c \
  /usr/include/stdc-predef.h \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
  /usr/include/stdio.h /usr/include/features.h \
@@ -45,12 +45,13 @@ dep_mainbfBCC.o = /home/yujiamanong/Desktop/test/mainbfBCC.c \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
  /usr/include/x86_64-linux-gnu/bits/mathinline.h \
- /home/yujiamanong/Desktop/test/allHeaders.h \
- /home/yujiamanong/Desktop/test/./headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/./headers/integerTypeDef.h \
- /home/yujiamanong/Desktop/test/./headers/globalVarINIT.h \
- /home/yujiamanong/Desktop/test/./headers/../headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/./headers/integerTypeDef.h \
- /home/yujiamanong/Desktop/test/./headers/process.h \
- /home/yujiamanong/Desktop/test/./headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/./headers/process_data.h
+ /home/yujiamanong/Desktop/CBB-Transmitter/allHeaders.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/commonStructure.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/integerTypeDef.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/globalVarINIT.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/../headers/commonStructure.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/integerTypeDef.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/process.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/commonStructure.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/process_data.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/mp_commands.h

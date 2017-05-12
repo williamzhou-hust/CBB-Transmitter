@@ -1,5 +1,4 @@
-dep_maindpdk.o = \
- /home/yujiamanong/Desktop/CBB-Transmitter/simple_mp_5_11/maindpdk.c \
+dep_maindpdk.o = /home/yujiamanong/Desktop/CBB-Transmitter/maindpdk.c \
  /usr/include/stdc-predef.h \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
  /usr/include/stdio.h /usr/include/features.h \
@@ -141,4 +140,13 @@ dep_maindpdk.o = \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_parse.h \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_socket.h \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline.h \
- /home/yujiamanong/Desktop/CBB-Transmitter/simple_mp_5_11/mp_commands.h
+ /home/yujiamanong/Desktop/CBB-Transmitter/allHeaders.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/commonStructure.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/integerTypeDef.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/globalVarINIT.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/../headers/commonStructure.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/integerTypeDef.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/process.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/commonStructure.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/process_data.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/./headers/mp_commands.h

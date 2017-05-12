@@ -25,10 +25,10 @@
 #include <cmdline_parse.h>
 #include <cmdline_socket.h>
 #include <cmdline.h>
-#include "mp_commands.h"
+#include "allHeaders.h"
 
-//#define RUNMAINDPDK
-//#ifdef RUNMAINDPDK
+#define RUNMAINDPDK
+#ifdef RUNMAINDPDK
 
 #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
 		
@@ -43,7 +43,7 @@ static const char *BCC_2_modulation = "BCC_2_modulation";
 static const char *modulation_2_CSD = "modulation_2_CSD";
 static const char *AfterCSD = "AfterCSD";
 const unsigned string_size = 512;
-const unsigned APEP_LEN = 512; 
+const unsigned APEP_LEN_DPDK = 512; 
 static int i=0; 
 struct rte_ring *Ring_Beforescramble,*Ring_scramble_2_BCC,*Ring_BCC_2_modulation,*Ring_modulation_2_CSD,*Ring_AfterCSD;
 struct rte_mempool *message_pool1;
@@ -58,10 +58,10 @@ static int bcc_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unu
 static int modulate_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unused)) void *arg); 
 static int CSD_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unused)) void *arg); 
 static int ReadData(__attribute__((unused)) void *Data); 
-static int GenDataAndScramble (__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out); 
-static int BCC_encoder (__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out);
-static int modulate(__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out);
-static int Data_CSD(__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out);
+static int GenDataAndScramble_DPDK (__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out); 
+static int BCC_encoder_DPDK (__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out);
+static int modulate_DPDK(__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out);
+static int Data_CSD_DPDK(__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out);
 static int ReadData_Loop();
 static int GenDataAndScramble_Loop();
 static int BCC_encoder_Loop();
@@ -70,15 +70,15 @@ static int Data_CSD_Loop();
 
 static int GenDataAndScramble_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unused)) void *arg) 
 {
-	memcpy((unsigned char *)arg, (unsigned char *)adb, APEP_LEN);//从DataIn拷贝数据到DataOut
-	printf("GenDataAndScramble success \n");
+	memcpy((unsigned char *)arg, (unsigned char *)adb, APEP_LEN_DPDK);//从DataIn拷贝数据到DataOut
+	printf("GenDataAndScramble_DPDK success \n");
 	rte_mempool_put(message_pool1, adb);//将DataIn刷回内存池message_pool1
 
 	return 0;
 }
 static int bcc_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unused)) void *arg) 
 {
-	memcpy((unsigned char *)arg, (unsigned char *)adb,APEP_LEN);
+	memcpy((unsigned char *)arg, (unsigned char *)adb,APEP_LEN_DPDK);
 	printf("BCCencode success\n");
 	rte_mempool_put(message_pool2, adb);
 
@@ -86,15 +86,15 @@ static int bcc_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unu
 }
 static int modulate_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unused)) void *arg) 
 {
-	memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN);
-	printf("modulate success\n");
+	memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN_DPDK);
+	printf("modulate_DPDK success\n");
 	rte_mempool_put(message_pool3, adb);
 
 	return 0;
 }
 static int CSD_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unused)) void *arg) 
 {
-	memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN);
+	memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN_DPDK);
 	printf("CSD success\n");
 	rte_mempool_put(message_pool4, adb);
 
@@ -132,10 +132,10 @@ static int ReadData(__attribute__((unused)) void *Data)
 	else
 	{
 	    FILE *fp=fopen("send_din_dec.txt","rt");
-		unsigned char* databits=(unsigned char*)malloc(APEP_LEN*sizeof(unsigned char));
+		unsigned char* databits=(unsigned char*)malloc(APEP_LEN_DPDK*sizeof(unsigned char));
 	    unsigned int datatmp=0;
 		int i=0;
-	    for(i=0;i<APEP_LEN;i++){
+	    for(i=0;i<APEP_LEN_DPDK;i++){
 	            if(fscanf(fp,"%ud",&datatmp) < 0){
 	            	free(databits);
 	            	printf("fscanf data error");
@@ -143,7 +143,7 @@ static int ReadData(__attribute__((unused)) void *Data)
 	            }
 	            databits[i]=datatmp&0x000000FF;
 	    }
-		memcpy((unsigned char *)Data, (unsigned char *)databits, APEP_LEN);//将文件读取数据复制给Data即原始数据流
+		memcpy((unsigned char *)Data, (unsigned char *)databits, APEP_LEN_DPDK);//将文件读取数据复制给Data即原始数据流
 	    fclose(fp);
 		printf("ReadData success\n");
 		free(databits);
@@ -155,8 +155,8 @@ static int ReadData(__attribute__((unused)) void *Data)
 static int GenDataAndScramble_Loop() 
 {
 	// unsigned lcore_id = rte_lcore_id();
-	// printf("GenDataAndScramble Starting core %u\n", lcore_id);
-	// const char *message ="GenDataAndScramble";
+	// printf("GenDataAndScramble_DPDK Starting core %u\n", lcore_id);
+	// const char *message ="GenDataAndScramble_DPDK";
 	void *Data_In_Scramble=NULL;
 	void *Data_Out_Scramble=NULL;
 	while (!quit){
@@ -169,13 +169,13 @@ static int GenDataAndScramble_Loop()
 		BCC_encoder_Loop ();
 	}
 	else 
-	GenDataAndScramble(Data_In_Scramble,Data_Out_Scramble);
+	GenDataAndScramble_DPDK(Data_In_Scramble,Data_Out_Scramble);
 	}
 	return 0;
 }
-static int GenDataAndScramble (__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out) 
+static int GenDataAndScramble_DPDK (__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out) 
 {
-		// void GenDataAndScramble(unsigned char *data_scramble, int ScrLength, unsigned char *databits, int valid_bits);
+		// void GenDataAndScramble_DPDK(unsigned char *data_scramble, int ScrLength, unsigned char *databits, int valid_bits);
 		// 接口：输入为原始数据流和有效数据位，输出为byte转换为bit存储并加扰码后的数据流。
 		// 操作：通过查比特扰码表，对原始数据进行比特化并加扰。
 		if (rte_ring_enqueue(Ring_scramble_2_BCC, Data_Out) < 0) {
@@ -190,8 +190,8 @@ static int GenDataAndScramble (__attribute__((unused)) void *Data_In,__attribute
 static int BCC_encoder_Loop() 
 {
 	// unsigned lcore_id = rte_lcore_id();
-	// printf("BCC_encoder Starting core %u\n", lcore_id);
-	// const char *message ="BCC_encoder";
+	// printf("BCC_encoder_DPDK Starting core %u\n", lcore_id);
+	// const char *message ="BCC_encoder_DPDK";
 	// void *Data =NULL;
 	void *Data_In_BCC=NULL;
 	void *Data_Out_BCC=NULL;
@@ -206,11 +206,11 @@ static int BCC_encoder_Loop()
 		continue;
 	}
 	else 
-	BCC_encoder(Data_In_BCC,Data_Out_BCC);
+	BCC_encoder_DPDK(Data_In_BCC,Data_Out_BCC);
 	}
 	return 0;
 }
-static int BCC_encoder (__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out)
+static int BCC_encoder_DPDK (__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out)
 {
 		// void BCC_encoder_OPT(unsigned char *data_scramble, int ScrLength, int N_SYM, unsigned char **code_out, int CodeLength);
 		// 接口：输入为扰码后的数据流及其有效数据长度和符号数，输出为BCC编码后的数据此时数据。
@@ -226,8 +226,8 @@ static int BCC_encoder (__attribute__((unused)) void *Data_In,__attribute__((unu
 static int modulate_Loop() 
 {
 	// unsigned lcore_id = rte_lcore_id();
-	// printf("modulate Starting core %u\n", lcore_id);
-	// const char *message ="modulate";
+	// printf("modulate_DPDK Starting core %u\n", lcore_id);
+	// const char *message ="modulate_DPDK";
 	// void *Data =NULL;
 	void *Data_In_modulate=NULL;
 	void *Data_Out_modulate=NULL;
@@ -242,11 +242,11 @@ static int modulate_Loop()
 		continue;
 	}
 	else 
-	modulate(Data_In_modulate,Data_Out_modulate);
+	modulate_DPDK(Data_In_modulate,Data_Out_modulate);
 	}
 	return 0;
 }
-static int modulate(__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out)
+static int modulate_DPDK(__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out)
 {
 		// void modulate_mapping(unsigned char *BCC_output, complex32 **subcar_map_data);
 		// 接口：输入为BCC编码后的数据，输出为经过分流交织，调制映射和插入导频后的数据。
@@ -262,8 +262,8 @@ static int modulate(__attribute__((unused)) void *Data_In,__attribute__((unused)
 static int Data_CSD_Loop() 
 {
 	// unsigned lcore_id = rte_lcore_id();
-	// printf("BCC_encoder Starting core %u\n", lcore_id);
-	// const char *message ="BCC_encoder";
+	// printf("BCC_encoder_DPDK Starting core %u\n", lcore_id);
+	// const char *message ="BCC_encoder_DPDK";
 	// void *Data =NULL;
 	void *Data_In_CSD=NULL;
 	void *Data_Out_CSD=NULL;
@@ -277,7 +277,7 @@ static int Data_CSD_Loop()
 	{
 		void *obj_table=NULL;
 		struct rte_mempool_cache *cache=NULL;
-		unsigned n=APEP_LEN;
+		unsigned n=APEP_LEN_DPDK;
 		rte_mempool_generic_put(message_pool5, &obj_table,n,cache,1);
 		//__mempool_put_bulk(message_pool5, obj_table,n,struct rte_mempool_cache *cache,1);
 		//rte_mempool_put(message_pool5, Data_Out);
@@ -289,13 +289,13 @@ static int Data_CSD_Loop()
 	else 
 	{
 	//rte_mempool_get(message_pool5, &Data_Out_CSD);
-	Data_CSD(Data_In_CSD,Data_Out_CSD);
+	Data_CSD_DPDK(Data_In_CSD,Data_Out_CSD);
 	}
 	
 	}
 	return 0;
 }
-static int Data_CSD(__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out)
+static int Data_CSD_DPDK(__attribute__((unused)) void *Data_In,__attribute__((unused)) void *Data_Out)
 {
 		// __Data_CSD_aux(complex32 **subcar_map_data, int N_SYM, complex32 **csd_data,int NTXindex);
 		// 接口：输入数据为调制映射并插入导频后的数据，输出为CSD后的数据。
@@ -305,7 +305,7 @@ static int Data_CSD(__attribute__((unused)) void *Data_In,__attribute__((unused)
 		rte_mempool_put(message_pool5, Data_Out);
 
 		//void *obj_table=NULL;
-		//unsigned n=APEP_LEN;
+		//unsigned n=APEP_LEN_DPDK;
 		//rte_ring_mc_dequeue_burst(Ring_AfterCSD, &obj_table,n);
 		printf("Clear Ring_AfterCSD\n");
 		rte_mempool_put(message_pool4, Data_In);
@@ -405,4 +405,4 @@ main(int argc, char **argv)
 	rte_eal_mp_wait_lcore();
 	return 0;
 }
-//#endif // RUN
+#endif // RUN

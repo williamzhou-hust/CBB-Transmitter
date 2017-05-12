@@ -5,7 +5,7 @@
 #include <time.h>
 #include "allHeaders.h"
 
-#define RUNBFCSD
+//#define RUNBFCSD
 #ifdef RUNBFCSD
 
 int isPreAndHeLTFVauled=0;

@@ -51,7 +51,7 @@ VPATH += $(SRCDIR)/typeDef
 VPATH += $(SRCDIR)/VarINIT
 
 # all source are stored in SRCS-y
-SRCS-y := main.c mainbfBCC.c test.c
+SRCS-y := main.c mainbfBCC.c test.c maindpdk.c
 SRCS-y += ccoding_byte.c
 
 #SRCS-y += ifft.c ifftShiftandIFFTPreamble.c
@@ -81,7 +81,7 @@ CFLAGS += -I$(SRCDIR)/process_data/process_datafunction
 CFLAGS += -I$(SRCDIR)/typeDef
 CFLAGS += -I$(SRCDIR)/VarINIT
 
-#CFLAGS += -D OPTIMIZATION
+CFLAGS += -D OPTIMIZATION
 #CFLAGS += $(WERROR_FLAGS)
 
 #LDLIBS += -L$(subst main,print_abcd,$(RTE_OUTPUT))/lib

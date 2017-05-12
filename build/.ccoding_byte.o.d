@@ -1,7 +1,8 @@
-dep_ccoding_byte.o = /home/yujiamanong/Desktop/test/BCCencode/ccoding_byte.c \
+dep_ccoding_byte.o = \
+ /home/yujiamanong/Desktop/CBB-Transmitter/BCCencode/ccoding_byte.c \
  /usr/include/stdc-predef.h \
  /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
- /home/yujiamanong/Desktop/test/BCCencode/../headers/process.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/BCCencode/../headers/process.h \
  /usr/include/stdio.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -16,7 +17,7 @@ dep_ccoding_byte.o = /home/yujiamanong/Desktop/test/BCCencode/ccoding_byte.c \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
  /usr/include/x86_64-linux-gnu/bits/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/stdio2.h \
- /home/yujiamanong/Desktop/test/BCCencode/../headers/commonStructure.h \
- /home/yujiamanong/Desktop/test/BCCencode/../headers/integerTypeDef.h \
- /home/yujiamanong/Desktop/test/BCCencode/../headers/globalVarINIT.h \
- /home/yujiamanong/Desktop/test/BCCencode/../headers/../headers/commonStructure.h
+ /home/yujiamanong/Desktop/CBB-Transmitter/BCCencode/../headers/commonStructure.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/BCCencode/../headers/integerTypeDef.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/BCCencode/../headers/globalVarINIT.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/BCCencode/../headers/../headers/commonStructure.h
