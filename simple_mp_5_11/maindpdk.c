@@ -73,8 +73,7 @@ static int GenDataAndScramble_encode_dpdk (__attribute__((unused)) void *adb,__a
 	memcpy((unsigned char *)arg, (unsigned char *)adb, APEP_LEN);//从DataIn拷贝数据到DataOut
 	printf("GenDataAndScramble success \n");
 	rte_mempool_put(message_pool1, adb);//将DataIn刷回内存池message_pool1
-	i++;
-	printf("%d\n",i);
+
 	return 0;
 }
 static int bcc_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unused)) void *arg) 
@@ -82,8 +81,7 @@ static int bcc_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unu
 	memcpy((unsigned char *)arg, (unsigned char *)adb,APEP_LEN);
 	printf("BCCencode success\n");
 	rte_mempool_put(message_pool2, adb);
-	i++;
-	printf("%d\n",i);
+
 	return 0;
 }
 static int modulate_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unused)) void *arg) 
@@ -91,8 +89,7 @@ static int modulate_encode_dpdk (__attribute__((unused)) void *adb,__attribute__
 	memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN);
 	printf("modulate success\n");
 	rte_mempool_put(message_pool3, adb);
-	i++;
-	printf("%d\n",i);
+
 	return 0;
 }
 static int CSD_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unused)) void *arg) 
@@ -100,8 +97,7 @@ static int CSD_encode_dpdk (__attribute__((unused)) void *adb,__attribute__((unu
 	memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN);
 	printf("CSD success\n");
 	rte_mempool_put(message_pool4, adb);
-	i++;
-	printf("%d\n",i);
+
 	return 0;
 }
 
@@ -143,6 +139,8 @@ static int ReadData(__attribute__((unused)) void *Data)
 	    fclose(fp);
 	printf("ReadData success\n");
 	free(databits);
+	i++;
+	printf("%d\n",i);
 	}
 	return 0;
 }
@@ -266,23 +264,23 @@ static int Data_CSD_Loop()
 			modulate_Loop();
 			continue;
 		}
-	else if (rte_mempool_full(message_pool5)) //内存池已满将内存池清空rte_mempool_full(const struct rte_mempool *mp)
-	//else if ((rte_mempool_get(message_pool5, &Data_Out_CSD) < 0)) //内存池已满将内存池清空
+	//else if (rte_mempool_full(message_pool5)) //内存池已满将内存池清空rte_mempool_full(const struct rte_mempool *mp)
+	else if ((rte_mempool_get(message_pool5, &Data_Out_CSD) < 0)) //内存池已满将内存池清空
 	{
-		///void *obj_table=NULL;
-		//struct rte_mempool_cache *cache=NULL;
-		//unsigned n=APEP_LEN;
-		//rte_mempool_generic_put(message_pool5, &obj_table,n,cache,1);
+		void *obj_table=NULL;
+		struct rte_mempool_cache *cache=NULL;
+		unsigned n=APEP_LEN;
+		rte_mempool_generic_put(message_pool5, &obj_table,n,cache,1);
 		//__mempool_put_bulk(message_pool5, obj_table,n,struct rte_mempool_cache *cache,1);
 		//rte_mempool_put(message_pool5, Data_Out);
-		//free(Data_Out);
+		//free(Data_Out_CSD);
 		rte_mempool_put(message_pool4, Data_In_CSD);
 		printf("Clear message_pool5 \n");
 		continue;
 	}
 	else 
 	{
-	rte_mempool_get(message_pool5, &Data_Out_CSD);
+	//rte_mempool_get(message_pool5, &Data_Out_CSD);
 	Data_CSD(Data_In_CSD,Data_Out_CSD);
 	}
 	
