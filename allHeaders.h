@@ -6,5 +6,6 @@
 #include "./headers/integerTypeDef.h"
 #include "./headers/process.h"
 #include "./headers/process_data.h"
+#include "./headers/mp_commands.h"
 
 #endif // ALLHEADERS
