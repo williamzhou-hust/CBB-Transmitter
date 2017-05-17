@@ -81,7 +81,7 @@ CFLAGS += -I$(SRCDIR)/process_data/process_datafunction
 CFLAGS += -I$(SRCDIR)/typeDef
 CFLAGS += -I$(SRCDIR)/VarINIT
 
-#CFLAGS += -D OPTIMIZATION
+CFLAGS += -D OPTIMIZATION
 #CFLAGS += $(WERROR_FLAGS)
 
 #LDLIBS += -L$(subst main,print_abcd,$(RTE_OUTPUT))/lib
