@@ -38,8 +38,6 @@ int main(int argc,char* argv[]){
     return 0;
 }
 
-#endif // DEBUGFORCS
-
 void printForCpmlex(complex rp){
     printf("real:%1.11f,imag:%1.11f\n",rp.real,rp.imag);
 }
@@ -47,3 +45,4 @@ void printForCpmlex(complex rp){
 void printForCpmlex32(complex32 rp){
     printf("real:%d,imag:%d\n",rp.real,rp.imag);
 }
+#endif // DEBUGFORCS
