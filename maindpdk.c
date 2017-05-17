@@ -57,7 +57,7 @@ static int GenDataAndScramble_encode_dpdk  (__attribute__((unused)) struct rte_m
 static int bcc_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb);
 static int modulate_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb);
 static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb);
-static int ReadDat (__attribute__((unused)) struct rte_mbuf *adb);
+static int ReadData(__attribute__((unused)) struct rte_mbuf *adb);
 static int GenDataAndScramble_DPDK (__attribute__((unused)) struct rte_mbuf *adb);
 static int BCC_encoder_DPDK (__attribute__((unused)) struct rte_mbuf *adb);
 static int modulate_DPDK (__attribute__((unused)) struct rte_mbuf *adb);
@@ -68,7 +68,7 @@ static int BCC_encoder_Loop();
 static int modulate_Loop();
 static int Data_CSD_Loop();  
 
-static int GenDataAndScramble_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb);
+static int GenDataAndScramble_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 {
 	//memcpy((unsigned char *)arg, (unsigned char *)adb, APEP_LEN_DPDK);//从DataIn拷贝数据到DataOut
 	printf("GenDataAndScramble_DPDK success \n");
@@ -76,14 +76,14 @@ static int GenDataAndScramble_encode_dpdk  (__attribute__((unused)) struct rte_m
 
 	return 0;
 }
-static int bcc_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb); 
+static int bcc_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 {
 	///memcpy((unsigned char *)arg, (unsigned char *)adb,APEP_LEN_DPDK);
 	printf("BCCencode success\n");
 	//rte_mempool_put(message_pool2, adb);
 	return 0;
 }
-static int modulate_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb);
+static int modulate_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 {
 	//memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN_DPDK);
 	printf("modulate_DPDK success\n");
@@ -91,7 +91,7 @@ static int modulate_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb);
 
 	return 0;
 }
-static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb);
+static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb)
 {
 	//memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN);
 	printf("CSD success\n");
@@ -188,7 +188,7 @@ static int GenDataAndScramble_Loop()
 	else 
 	{
 		// printf("sizeof Data_In_Scramble %d\n", strlen(Data_In_Scramble));
-		GenDataAndScramble(Data_In_Scramble);
+		GenDataAndScramble_DPDK(Data_In_Scramble);
 	}
 	
 	}
@@ -220,7 +220,7 @@ static int BCC_encoder_Loop()
 		else 
 		{
 			// printf("sizeof Data_In_BCC %d\n", strlen(Data_In_BCC));
-			BCC_encoder(Data_In_BCC);
+			BCC_encoder_DPDK(Data_In_BCC);
 		}
 		
 	}
@@ -252,7 +252,7 @@ static int modulate_Loop()
 		else 
 		{
 				// printf("sizeof Data_In_modulate %d\n", strlen(Data_In_modulate));
-				modulate(Data_In_modulate);
+				modulate_DPDK(Data_In_modulate);
 		}
 
 	}
@@ -278,7 +278,7 @@ static int Data_CSD_Loop()
 		else 
 		{
 			// printf("sizeof Data_In_CSD %d\n", strlen(Data_In_CSD));
-			Data_CSD(Data_In_CSD);
+			Data_CSD_DPDK(Data_In_CSD);
 		}
 	
 	}
