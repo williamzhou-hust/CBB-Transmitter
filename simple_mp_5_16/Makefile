@@ -29,7 +29,7 @@
 #   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-export RTE_SDK ?=/home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1
+export RTE_SDK ?=/home/yujiamanong/Desktop/dpdk-stable-16.11.1
 ifeq ($(RTE_SDK),)
 $(error "Please define RTE_SDK environment variable")
 endif

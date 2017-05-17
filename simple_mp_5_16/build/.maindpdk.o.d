@@ -1,6 +1,7 @@
-dep_maindpdk.o = /home/fozu/Desktop/simple_mp_5_16/maindpdk.c \
+dep_maindpdk.o = \
+ /home/yujiamanong/Desktop/CBB-Transmitter/simple_mp_5_16/maindpdk.c \
  /usr/include/stdc-predef.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
  /usr/include/stdio.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -33,7 +34,7 @@ dep_maindpdk.o = /home/fozu/Desktop/simple_mp_5_16/maindpdk.c \
  /usr/include/x86_64-linux-gnu/bits/termios.h \
  /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
  /usr/include/x86_64-linux-gnu/sys/queue.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_common.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_common.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
  /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
@@ -57,34 +58,34 @@ dep_maindpdk.o = /home/fozu/Desktop/simple_mp_5_16/maindpdk.c \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/xmmintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/mmintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/mm_malloc.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_memory.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/exec-env/rte_dom0_common.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_memzone.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_launch.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_eal.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_memory.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/exec-env/rte_dom0_common.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_memzone.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_launch.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_eal.h \
  /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_per_lcore.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_per_lcore.h \
  /usr/include/pthread.h /usr/include/x86_64-linux-gnu/bits/setjmp.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_lcore.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_debug.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_log.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_branch_prediction.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_atomic.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/generic/rte_atomic.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_atomic_64.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_branch_prediction.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_ring.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_log.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_mempool.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_spinlock.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/generic/rte_spinlock.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_rtm.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_cpuflags.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/generic/rte_cpuflags.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_common.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_memcpy.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_vect.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_lcore.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_debug.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_log.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_branch_prediction.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_atomic.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/generic/rte_atomic.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_atomic_64.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_branch_prediction.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_ring.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_log.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_mempool.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_spinlock.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/generic/rte_spinlock.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_rtm.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_cpuflags.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/generic/rte_cpuflags.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_common.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_memcpy.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_vect.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/x86intrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/ia32intrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/pmmintrin.h \
@@ -134,14 +135,14 @@ dep_maindpdk.o = /home/fozu/Desktop/simple_mp_5_16/maindpdk.c \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/xsavesintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/xsavecintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/mwaitxintrin.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_rdline.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_cirbuf.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_vt100.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_parse.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_socket.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline.h \
- /home/fozu/Desktop/simple_mp_5_16/mp_commands.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_mbuf.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_prefetch.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/generic/rte_prefetch.h \
- /home/fozu/dpdk-16.11.1/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_mbuf_ptype.h
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_rdline.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_cirbuf.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_vt100.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_parse.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline_socket.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/cmdline.h \
+ /home/yujiamanong/Desktop/CBB-Transmitter/simple_mp_5_16/mp_commands.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_mbuf.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_prefetch.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/generic/rte_prefetch.h \
+ /home/yujiamanong/Desktop/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_mbuf_ptype.h
