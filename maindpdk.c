@@ -93,7 +93,7 @@ static int modulate_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 }
 static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb)
 {
-	//memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN);
+	//memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN_DPDK);
 	printf("CSD success\n");
 	// printf("sizeof Data_In_CSD %d\n", strlen(adb));
 	//printf("sizeof Data_In_CSD befroe put  %d\n", strlen(adb));
@@ -152,21 +152,37 @@ static int ReadData(__attribute__((unused)) struct rte_mbuf *Data)
 	//printf("the number of free entries in the mempool befroe put %d\n", rte_mempool_free_count(mbuf_pool));
 	//rte_mempool_put(mbuf_pool,&Data);
 	//printf("the number of free entries in the mempool after put %d\n", rte_mempool_free_count(mbuf_pool));
-
-	  FILE *fp=fopen("send_din_dec.txt","rt");
-		unsigned char* databits=(unsigned char*)malloc(APEP_LEN*sizeof(unsigned char));
-	    unsigned int datatmp=0;
-		int i=0;
-	    for(i=0;i<APEP_LEN;i++){
-	            fscanf(fp,"%ud",&datatmp);
-	            databits[i]=datatmp&0x000000FF;
-	    }
-		memcpy((unsigned char *)Data, (unsigned char *)databits, APEP_LEN);//将文件读取数据复制给Data即原始数据流
-
-	 fclose(fp);
+	if(Data == NULL){
+		return 0;
+	}
+	FILE *fp=fopen("send_din_dec.txt","rt");
+	unsigned char* databits=(unsigned char*)malloc(APEP_LEN_DPDK*sizeof(unsigned char));
+	if(databits == NULL){
+		printf("error");
+		return 0;
+	}
+	unsigned int datatmp=0;
+	int i=0;
+	for(i=0;i<APEP_LEN_DPDK;i++){
+	    fscanf(fp,"%ud",&datatmp);
+	    databits[i]=datatmp&0x000000FF;
+	}
+	memcpy((unsigned char *)rte_pktmbuf_mtod(Data,unsigned char *), databits, APEP_LEN_DPDK);//将文件读取数据复制给Data即原始数据流
+	unsigned char *temp = rte_pktmbuf_mtod(Data,unsigned char *);
+	//for(i=0;i<APEP_LEN_DPDK;i++){
+	//    printf("%d\n", *temp++);
+	//}
+	temp = rte_pktmbuf_mtod(Data,unsigned char *);
+	unsigned char *temp2 = rte_pktmbuf_mtod_offset(Data, unsigned char *, 1024);
+	memcpy(temp2, temp, APEP_LEN_DPDK);
+	for(i=0;i<APEP_LEN_DPDK;i++){
+	    printf("%d\n", *temp2++);
+	}
+	fclose(fp);
 	printf("ReadData success\n");
 	free(databits);
-	printf("data_len %d\n", Data->data_len);
+	//printf("data %d\n", strlen(rte_pktmbuf_mtod(Data,unsigned char *)));
+	//printf("data_len %d\n", Data->data_len);
 	return 0;
 }
 static int GenDataAndScramble_Loop() 
