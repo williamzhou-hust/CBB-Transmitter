@@ -4,6 +4,7 @@
 #include <math.h>
 #include "../../headers/commonStructure.h"
 #include "../../headers/globalVarINIT.h"
+#include "../../headers/integerTypeDef.h"
 #include "../../headers/process_data.h"
 
 #define twice(N) (1<<(N))
@@ -11,7 +12,7 @@
 static int pilot_N = 8;
 static int zero_N  = 14;
 
-unsigned int *streamweave_table[N_STS]; /**< 含导频的分流交织表 */
+int16 *streamweave_table[N_STS]; /**< 含导频的分流交织表 */
 
 //导频位置查询
 static int pilot_index80[8] = {121,284,495,658,770,933,1144,1307};/**< 此处插入导频的坐标进行了修改，地址改到调制映射之前数据地址处 */
@@ -24,11 +25,11 @@ static complex32 Data_pilot160[8]= {{8192,0},{8192,0},{8192,0},{-8192,0},{-8192,
 
 static complex32 pilot_type[3]={{-8192,0},{0,0},{8192,0}};
 
-void generate_stream_code_in_table(unsigned int **code_in,int N_BPSCS, int N_CBPS, int N_ES)                               //无导频位置的分流交织表
+void generate_stream_code_in_table(int16 **code_in,int N_BPSCS, int N_CBPS, int N_ES)                               //无导频位置的分流交织表
 {
     int CodeLength = N_CBPS/N_STS;
 
-    unsigned int *output = (unsigned int *)malloc(sizeof(unsigned int)*(CodeLength*N_STS));
+    int16 *output = (int16 *)malloc(sizeof(int16)*(CodeLength*N_STS));
     int p;
     int temp=CodeLength*N_STS;
     for(p=0; p<temp; p++)
@@ -37,10 +38,10 @@ void generate_stream_code_in_table(unsigned int **code_in,int N_BPSCS, int N_CBP
     int i,j,k;
     int s,S,i_ss,k1;
     int floor1,floor2;
-    unsigned int *BCC_stream_parser[N_STS];
+    int16 *BCC_stream_parser[N_STS];
     for(i=1;i<=N_STS;i++)
     {
-        BCC_stream_parser[i-1] = (unsigned int *)malloc(sizeof(unsigned int)*CodeLength);
+        BCC_stream_parser[i-1] = (int16 *)malloc(sizeof(int16)*CodeLength);
         if(BCC_stream_parser[i-1]==NULL)
         {
             printf("error: BCC_stream_parser[%d]¡",i-1);
@@ -169,7 +170,7 @@ void generate_stream_code_in_table(unsigned int **code_in,int N_BPSCS, int N_CBP
 
 }
 
-void PilotAdd_table(unsigned int **code_in,int code_inLength,unsigned int **code_out,int code_outLength) //加入导频位置的分流交织表
+void PilotAdd_table(int16 **code_in,int code_inLength,int16 **code_out,int code_outLength) //加入导频位置的分流交织表
 {
     //新建拓展的二维数组
     //unsigned int code_out[N_STS][Length+8+14];
@@ -219,10 +220,10 @@ void initial_streamwave_table()
     unsigned int TableLength = CodeLength+pilot_N+zero_N;
 
     /**< 生成无导频的分流交织表 */
-    unsigned int *code_in_table[N_STS];
+    int16 *code_in_table[N_STS];
     for(i=0;i<N_STS;i++)
     {
-        code_in_table[i] = (unsigned int *)malloc(sizeof(unsigned int)*CodeLength);
+        code_in_table[i] = (int16 *)malloc(sizeof(int16)*CodeLength);
         if(code_in_table[i]==NULL)
         {
             printf("error: process_data//code_out[%d]",i);
@@ -233,7 +234,7 @@ void initial_streamwave_table()
     /**< 生成含有导频地址的分流交织表 */
     for(i=0;i<N_STS;i++)
     {
-        streamweave_table[i] = (unsigned int *)malloc(sizeof(unsigned int)*TableLength);
+        streamweave_table[i] = (int16 *)malloc(sizeof(int16)*TableLength);
         if(streamweave_table[i]==NULL)
         {
             printf("error: process_data//code_out[%d]",i);
@@ -250,7 +251,7 @@ void initial_streamwave_table()
 
 }
 
-void parser_stream_interweave(unsigned char *output,unsigned int **stream_interweave_dataout,unsigned int **stream_parser_weave_table)               //查表函数
+void parser_stream_interweave(unsigned char *output,unsigned char **stream_interweave_dataout,int16 **stream_parser_weave_table)               //查表函数
 {
     unsigned char rate_type;
     int N_BPSCS, N_DBPS, N_CBPS, N_ES;
@@ -282,7 +283,7 @@ void parser_stream_interweave(unsigned char *output,unsigned int **stream_interw
 }
 
 
-void __bi2de_opt(unsigned int **code_out,int mode,int num,int Nov_STS)
+void __bi2de_opt(unsigned char **code_out,int mode,int num,int Nov_STS)
 {
       int j,k;
       int out;
@@ -310,7 +311,7 @@ void __bi2de_opt(unsigned int **code_out,int mode,int num,int Nov_STS)
 
 }
 
-void __Modulation_11ax_opt(unsigned int **code_out, int mode,int num, complex32 **sym_mod,int Nov_STS)
+void __Modulation_11ax_opt(unsigned char **code_out, int mode,int num, complex32 **sym_mod,int Nov_STS)
 {
     int index[16] = {1,2,4,3,8,7,5,6,16,15,13,14,9,10,12,11};
     int j,real_j,imag_j,k;
@@ -373,10 +374,10 @@ void modulate_mapping(unsigned char *BCC_output, complex32 **subcar_map_data)
     unsigned int TableLength = CodeLength+pilot_N+zero_N;
 
     /**< 通过查表生成分流交织后的数据块 */
-    unsigned int *stream_interweave_dataout[N_STS];
+    unsigned char *stream_interweave_dataout[N_STS];
     for(i=0;i<N_STS;i++)
     {
-        stream_interweave_dataout[i] = (unsigned int *)malloc(sizeof(unsigned int)*TableLength*N_SYM);
+        stream_interweave_dataout[i] = (unsigned char *)malloc(sizeof(unsigned char)*TableLength*N_SYM);
         if(stream_interweave_dataout[i]==NULL)
         {
             printf("error: process_data//code_out[%d]",i);
