@@ -159,10 +159,9 @@ void BCC_encoder_OPT(unsigned char *data_scramble, int ScrLength, int N_SYM, uns
 {
     unsigned int numbytes = ScrLength +1;
     unsigned char *inPtr  = data_scramble;
-    unsigned char *outPtr;
-    unsigned char *output = (unsigned char *)malloc(sizeof(unsigned char)*(CodeLength*N_STS+24));  //24为防止指针越界
-
-    outPtr = output;
+    unsigned char *outPtr = *code_out;
+    //unsigned char *output = (unsigned char *)malloc(sizeof(unsigned char)*(CodeLength*N_STS+24));  //24为防止指针越界
+    //outPtr = output;
 
     unsigned char rate_type;
     int N_BPSCS, N_DBPS, N_CBPS, N_ES;
@@ -172,7 +171,7 @@ void BCC_encoder_OPT(unsigned char *data_scramble, int ScrLength, int N_SYM, uns
     //ccodedot11_encode (numbytes, inPtr, outPtr, rate_type);
 	unsigned char initstate=0;
 	check_BCCcode(numbytes,inPtr,outPtr,initstate,rate_type);
-	*code_out=output;
+	//*code_out=outPtr;
 
 	/*
     int i,j,k;

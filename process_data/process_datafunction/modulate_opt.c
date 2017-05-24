@@ -317,6 +317,10 @@ void __Modulation_11ax_opt(unsigned char **code_out, int mode,int num, complex32
     int j,real_j,imag_j,k;
     //int N = (*NumSampEffect)/2;
     complex32 *C;
+    /////////////////////////////////////////////////////////////
+    int N_CBPS, N_SYM, ScrLength, valid_bits;
+    GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
+    /////////////////////////////////////////////////////////////
     switch(mode)
     {
         case 0: C=QAM1;
@@ -342,13 +346,15 @@ void __Modulation_11ax_opt(unsigned char **code_out, int mode,int num, complex32
     {
 
         if(code_out[Nov_STS][j-1]>16)
-            sym_mod[Nov_STS][t]=pilot_type[code_out[Nov_STS][j-1]-99];
+            //sym_mod[Nov_STS][t]=pilot_type[code_out[Nov_STS][j-1]-99];
+            *sym_mod[Nov_STS*subcar*N_SYM + t]=pilot_type[code_out[Nov_STS][j-1]-99];
         else
         {
            real_j = index[code_out[Nov_STS][j-1]];
            imag_j = index[code_out[Nov_STS][j]];
            k = (twice(mode)-imag_j)*twice(mode)+real_j;
-           sym_mod[Nov_STS][t] = C[k-1];
+           //sym_mod[Nov_STS][t] = C[k-1];
+           *sym_mod[Nov_STS*subcar*N_SYM + t] = C[k-1];
            j++;
         }
         t++;
