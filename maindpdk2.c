@@ -29,7 +29,7 @@
 
 #include "allHeaders.h"
 
-#define RUNMAINDPDK
+//#define RUNMAINDPDK
 #ifdef RUNMAINDPDK
 
 #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
@@ -199,7 +199,7 @@ static int ReadData(__attribute__((unused)) struct rte_mbuf *Data)
 	    fscanf(fp,"%ud",&datatmp);
 	    databits[i]=datatmp&0x000000FF;
 	}
-	//memcpy(rte_pktmbuf_mtod(Data,unsigned char *), databits, APEP_LEN_DPDK);
+	memcpy(rte_pktmbuf_mtod(Data,unsigned char *), databits, APEP_LEN_DPDK);
 	//memcpy(databits_temp, databits, APEP_LEN_DPDK);//将文件读取数据复制给Data即原始数据流
 	//printf("**\n");
 	//memcpy(rte_pktmbuf_mtod(Data,unsigned char *), databits_temp, APEP_LEN_DPDK);
