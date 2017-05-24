@@ -82,22 +82,39 @@ static int Data_CSD_Loop();
 
 static int GenDataAndScramble_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 {
+	int N_CBPS, N_SYM, ScrLength, valid_bits;
+	GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
+	//pingpang 
+	unsigned char *databits = rte_pktmbuf_mtod(adb, unsigned char *);
+	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(adb, unsigned char *, MBUF_CACHE_SIZE/2*1024);
 	//memcpy((unsigned char *)arg, (unsigned char *)adb, APEP_LEN_DPDK);//从DataIn拷贝数据到DataOut
 	//printf("GenDataAndScramble_DPDK success \n");
 	//rte_mempool_put(message_pool1, adb);//将DataIn刷回内存池message_pool1
 	printf("GenDataAndScramble_encode_dpdk\n");
 	printf("GenDataAndScramble_encode_dpdk_count = %d\n", GenDataAndScramble_encode_dpdk_count++);
-	rte_ring_enqueue(Ring_scramble_2_BCC, adb);
+
+	GenDataAndScramble(data_scramble, ScrLength, databits, valid_bits);
+
+	rte_ring_enqueue(Ring_scramble_2_BCC, adb);  //The useful data now is in the Back half.
 	return 0;
 }
 static int bcc_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 {
+	int N_CBPS, N_SYM, ScrLength, valid_bits;
+	GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
+	int CodeLength = N_SYM*N_CBPS/N_STS;
 	///memcpy((unsigned char *)arg, (unsigned char *)adb,APEP_LEN_DPDK);
 	//printf("BCCencode success\n");
 	//rte_mempool_put(message_pool2, adb);
 	printf("bcc_encode_dpdk\n");
 	printf("bcc_encode_dpdk_count = %d\n", bcc_encode_dpdk_count++);
-	rte_ring_enqueue(Ring_BCC_2_modulation, adb);
+
+	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(adb, unsigned char *, MBUF_CACHE_SIZE/2*1024);
+	unsigned char* BCCencodeout = rte_pktmbuf_mtod_offset(adb, unsigned char *, 0);
+	//unsigned char *BCCencodeout = (unsigned char *)malloc(sizeof(unsigned char)*(CodeLength*N_STS+24));  //24为防止指针越界
+	BCC_encoder_OPT(data_scramble, ScrLength, N_SYM, &BCCencodeout, CodeLength);
+
+	rte_ring_enqueue(Ring_BCC_2_modulation, adb); //The useful data now is in the First half.
 			// printf("sizeof Data_In_Scramble %d\n", strlen(Data_In_Scramble));
 	return 0;
 }
@@ -106,12 +123,21 @@ static int modulate_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 	//memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN_DPDK);
 	printf("modulate_DPDK success\n");
 	printf("modulate_encode_dpdk_count = %d\n", modulate_encode_dpdk_count++);
+
+	unsigned char* BCCencodeout = rte_pktmbuf_mtod_offset(adb, unsigned char *, 0);
+	complex32 *subcar_map_data = rte_pktmbuf_mtod_offset(adb, complex32 *, MBUF_CACHE_SIZE/2*1024);
+	//complex32 *subcar_map_data[N_STS];
+	modulate_mapping(BCCencodeout, &subcar_map_data);
+
 	//rte_mempool_put(message_pool3, adb);
 	rte_ring_enqueue(Ring_modulation_2_CSD, adb);
 	return 0;
 }
 static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb)
 {
+	int i;
+	int N_CBPS, N_SYM, ScrLength, valid_bits;
+	GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
 	//memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN);
 	//printf("CSD success\n");
 	// printf("sizeof Data_In_CSD %d\n", strlen(adb));
@@ -126,6 +152,12 @@ static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb)
 	printf("CSD_encode_dpdk_count = %d\n", CSD_encode_dpdk_count++);
 	//printf("the number of free entries in the mempool after put %d\n", rte_mempool_free_count(mbuf_pool));
 	//printf("sizeof Data_In_CSD after put  %d\n", strlen(adb));
+	complex32 *csd_data = rte_pktmbuf_mtod_offset(adb, complex32 *, 0);
+	complex32 *subcar_map_data = rte_pktmbuf_mtod_offset(adb, complex32 *, MBUF_CACHE_SIZE/2*1024);
+	for(i=0;i<N_STS;i++){
+		__Data_CSD_aux(&subcar_map_data, N_SYM, &csd_data,i);
+	}
+
 	rte_mempool_put(adb->pool, adb);
 	//rte_pktmbuf_free(adb);
 	return 0;
@@ -184,7 +216,7 @@ static int ReadData(__attribute__((unused)) struct rte_mbuf *Data)
 	//printf("sizeof(struct rte_mbuf) = %d\n", sizeof(struct rte_mbuf));
 	printf("Data->buflen = %d\n",Data->buf_len);
 	//printf("Data->priv_size = %d\n",Data->priv_size);
-	printf("ReadData_count = %d\n", ReadData_count++);
+	//printf("ReadData_count = %d\n", ReadData_count++);
 	//printf("Data->data_off = %d\n",Data->data_off);
 	FILE *fp=fopen("send_din_dec.txt","rt");
 	unsigned char* databits=(unsigned char*)malloc(APEP_LEN_DPDK*sizeof(unsigned char));
@@ -199,7 +231,7 @@ static int ReadData(__attribute__((unused)) struct rte_mbuf *Data)
 	    fscanf(fp,"%ud",&datatmp);
 	    databits[i]=datatmp&0x000000FF;
 	}
-	//memcpy(rte_pktmbuf_mtod(Data,unsigned char *), databits, APEP_LEN_DPDK);
+	memcpy(rte_pktmbuf_mtod(Data,unsigned char *), databits, APEP_LEN_DPDK);
 	//memcpy(databits_temp, databits, APEP_LEN_DPDK);//将文件读取数据复制给Data即原始数据流
 	//printf("**\n");
 	//memcpy(rte_pktmbuf_mtod(Data,unsigned char *), databits_temp, APEP_LEN_DPDK);

@@ -2,6 +2,7 @@
 #define HEADGLOBALVAR
 
 #include "../headers/commonStructure.h"
+#include "../../headers/integerTypeDef.h"
 #define N_STS 4
 #define N_TX 4
 #define N_RX 4
@@ -60,7 +61,7 @@ extern Scramble_t ChartTable[256][128];
 #endif
 
 //interleaver table
-extern unsigned int *streamweave_table[N_STS]; /**< 含导频的分流交织表 */
+extern int16 *streamweave_table[N_STS]; /**< 含导频的分流交织表 */
 extern complex32 QAM1[2];
 extern complex32 QAM2[4];
 extern complex32 QAM4[16];

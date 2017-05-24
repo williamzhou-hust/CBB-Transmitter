@@ -1,13 +1,13 @@
 dep_rte_approx.o = \
- /home/yujiamanong/Desktop/CBB-Transmitter/dpdk-stable-16.11.1/lib/librte_sched/rte_approx.c \
+ /home/zgp/Documents/yujiamanong/CBB-Transmitter/dpdk-stable-16.11.1/lib/librte_sched/rte_approx.c \
  /usr/include/stdc-predef.h \
- /home/yujiamanong/Desktop/CBB-Transmitter/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
+ /home/zgp/Documents/yujiamanong/CBB-Transmitter/dpdk-stable-16.11.1/x86_64-native-linuxapp-gcc/include/rte_config.h \
  /usr/include/stdlib.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
  /usr/include/x86_64-linux-gnu/bits/endian.h \
@@ -26,6 +26,6 @@ dep_rte_approx.o = \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib.h \
- /home/yujiamanong/Desktop/CBB-Transmitter/dpdk-stable-16.11.1/lib/librte_sched/rte_approx.h \
- /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h /usr/include/stdint.h \
+ /home/zgp/Documents/yujiamanong/CBB-Transmitter/dpdk-stable-16.11.1/lib/librte_sched/rte_approx.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h
