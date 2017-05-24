@@ -345,6 +345,7 @@ static int modulate_DPDK(__attribute__((unused)) struct rte_mbuf *Data_In)
 {
 		printf("modulate_DPDK_count = %d\n", modulate_DPDK_count++);
 		modulate_encode_dpdk(Data_In);
+		printf("AAAAAAAAAAAA\n");
 		return 0;
 }
 static int Data_CSD_Loop() 
@@ -396,11 +397,11 @@ main(int argc, char **argv)
 	// 运行一次得到preamble和HeLTF.
 	//generatePreambleAndHeLTF_csd()
 	// 运行一次得到比特干扰码表。
-	//Creatnewchart();
+	Creatnewchart();
 	// 运行一次得到BCC编码表。
-	//init_BCCencode_table();
+	init_BCCencode_table();
 	// 运行一次得到生成导频的分流交织表
-	//initial_streamwave_table();
+	initial_streamwave_table();
 	// 运行一次得到CSD表。
 	//initcsdTableForHeLTF();
 	// 初始化函数，计算OFDM符号个数，字节长度
