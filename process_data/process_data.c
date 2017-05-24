@@ -30,7 +30,8 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
     BCC_encoder(data_scramble, ScrLength, N_SYM, code_out, CodeLength);
 	#else
 	//printf("use OPT BCC!\n");
-	unsigned char* BCCencodeout;
+	//unsigned char* BCCencodeout;
+    unsigned char *BCCencodeout = (unsigned char *)malloc(sizeof(unsigned char)*(CodeLength*N_STS+24));  //24为防止指针越界
     BCC_encoder_OPT(data_scramble, ScrLength, N_SYM, &BCCencodeout, CodeLength);
 	#endif
 
