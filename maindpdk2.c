@@ -29,7 +29,7 @@
 
 #include "allHeaders.h"
 
-//#define RUNMAINDPDK
+#define RUNMAINDPDK
 #ifdef RUNMAINDPDK
 
 #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
@@ -125,12 +125,15 @@ static int modulate_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 	printf("modulate_encode_dpdk_count = %d\n", modulate_encode_dpdk_count++);
 
 	unsigned char* BCCencodeout = rte_pktmbuf_mtod_offset(adb, unsigned char *, 0);
+	printf("asdkfsk\n");
 	complex32 *subcar_map_data = rte_pktmbuf_mtod_offset(adb, complex32 *, MBUF_CACHE_SIZE/2*1024);
+	printf("asdkfsk\n");
 	//complex32 *subcar_map_data[N_STS];
 	modulate_mapping(BCCencodeout, &subcar_map_data);
-
+	printf("asdkfsk\n");
 	//rte_mempool_put(message_pool3, adb);
 	rte_ring_enqueue(Ring_modulation_2_CSD, adb);
+	printf("asdkfsk\n");
 	return 0;
 }
 static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb)
@@ -158,7 +161,7 @@ static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb)
 		__Data_CSD_aux(&subcar_map_data, N_SYM, &csd_data,i);
 	}
 
-	rte_mempool_put(adb->pool, adb);
+	//rte_mempool_put(adb->pool, adb);
 	//rte_pktmbuf_free(adb);
 	return 0;
 }
@@ -436,12 +439,12 @@ main(int argc, char **argv)
 	rte_eal_remote_launch(ReadData_Loop, NULL,1);
 	rte_eal_remote_launch(GenDataAndScramble_Loop, NULL, 2);
 	rte_eal_remote_launch(BCC_encoder_Loop, NULL, 3);
-	rte_eal_remote_launch(BCC_encoder_Loop, NULL,4);
-	rte_eal_remote_launch(BCC_encoder_Loop, NULL, 5);
-	rte_eal_remote_launch(modulate_Loop, NULL, 6);
-	rte_eal_remote_launch(modulate_Loop, NULL,7);
-	rte_eal_remote_launch(modulate_Loop, NULL,8);
-	rte_eal_remote_launch(Data_CSD_Loop, NULL,9);
+	//rte_eal_remote_launch(BCC_encoder_Loop, NULL,4);
+	//rte_eal_remote_launch(BCC_encoder_Loop, NULL, 5);
+	rte_eal_remote_launch(modulate_Loop, NULL, 4);
+	//rte_eal_remote_launch(modulate_Loop, NULL,7);
+	//rte_eal_remote_launch(modulate_Loop, NULL,8);
+	rte_eal_remote_launch(Data_CSD_Loop, NULL,5);
 	//Data_CSD_Loop(NULL);
 	rte_eal_mp_wait_lcore();
 	return 0;
