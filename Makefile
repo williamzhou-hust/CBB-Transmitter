@@ -51,7 +51,7 @@ VPATH += $(SRCDIR)/typeDef
 VPATH += $(SRCDIR)/VarINIT
 
 # all source are stored in SRCS-y
-SRCS-y := main.c mainbfBCC.c test.c maindpdk.c maindpdk2.c
+SRCS-y := main.c mainbfBCC.c test.c maindpdk.c maindpdk2.c maindpdk3.c
 SRCS-y += ccoding_byte.c
 
 #SRCS-y += ifft.c ifftShiftandIFFTPreamble.c

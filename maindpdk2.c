@@ -29,7 +29,7 @@
 
 #include "allHeaders.h"
 
-#define RUNMAINDPDK
+//#define RUNMAINDPDK
 #ifdef RUNMAINDPDK
 
 #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
@@ -307,7 +307,7 @@ static int BCC_encoder_Loop()
 				//GenDataAndScramble_Loop();
 			continue;
 		}
-		else 
+		else
 		{	
 			// printf("sizeof Data_In_Scramble %d\n", strlen(Data_In_Scramble));
 			BCC_encoder_DPDK(Data_In_BCC);
@@ -332,7 +332,7 @@ static int modulate_Loop()
 		if (rte_ring_dequeue(Ring_BCC_2_modulation, &Data_In_modulate) < 0)
 		{
 			//printf("switch_to_BCC_encoder_Loop");
-				//BCC_encoder_Loop();
+			//BCC_encoder_Loop();
 			continue;
 		}
 		else 
@@ -368,6 +368,7 @@ static int Data_CSD_Loop()
 				// printf("sizeof Data_In_CSD %d\n", strlen(Data_In_CSD));
 				printf("Data_CSD_Loop_count = %d\n", Data_CSD_Loop_count++);
 				Data_CSD_DPDK(Data_In_CSD);
+
 			}
 		
 		}
