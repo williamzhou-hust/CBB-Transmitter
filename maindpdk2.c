@@ -65,6 +65,8 @@ int ReadData_Loop_count = 0;
 int Data_CSD_Loop_count = 0;
 int modulate_Loop_count = 0;
 
+int N_CBPS, N_SYM, ScrLength, valid_bits;
+
 static int GenDataAndScramble_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb);
 static int bcc_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb);
 static int modulate_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb);
@@ -82,26 +84,27 @@ static int Data_CSD_Loop();
 
 static int GenDataAndScramble_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 {
-	int N_CBPS, N_SYM, ScrLength, valid_bits;
-	GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
-	//pingpang 
-	unsigned char *databits = rte_pktmbuf_mtod(adb, unsigned char *);
-	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(adb, unsigned char *, MBUF_CACHE_SIZE/2*1024);
+	//int N_CBPS, N_SYM, ScrLength, valid_bits;
+	//GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
+
 	//memcpy((unsigned char *)arg, (unsigned char *)adb, APEP_LEN_DPDK);//从DataIn拷贝数据到DataOut
 	//printf("GenDataAndScramble_DPDK success \n");
 	//rte_mempool_put(message_pool1, adb);//将DataIn刷回内存池message_pool1
 	printf("GenDataAndScramble_encode_dpdk\n");
 	printf("GenDataAndScramble_encode_dpdk_count = %d\n", GenDataAndScramble_encode_dpdk_count++);
-
+	//pingpang 
+	unsigned char *databits = rte_pktmbuf_mtod(adb, unsigned char *);
+	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(adb, unsigned char *, MBUF_CACHE_SIZE/2*1024);
 	GenDataAndScramble(data_scramble, ScrLength, databits, valid_bits);
 
 	rte_ring_enqueue(Ring_scramble_2_BCC, adb);  //The useful data now is in the Back half.
+	//rte_pktmbuf_free(adb);
 	return 0;
 }
 static int bcc_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 {
-	int N_CBPS, N_SYM, ScrLength, valid_bits;
-	GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
+	//int N_CBPS, N_SYM, ScrLength, valid_bits;
+	//GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
 	int CodeLength = N_SYM*N_CBPS/N_STS;
 	///memcpy((unsigned char *)arg, (unsigned char *)adb,APEP_LEN_DPDK);
 	//printf("BCCencode success\n");
@@ -116,6 +119,7 @@ static int bcc_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 
 	rte_ring_enqueue(Ring_BCC_2_modulation, adb); //The useful data now is in the First half.
 			// printf("sizeof Data_In_Scramble %d\n", strlen(Data_In_Scramble));
+	//rte_pktmbuf_free(adb);
 	return 0;
 }
 static int modulate_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
@@ -134,13 +138,14 @@ static int modulate_encode_dpdk  (__attribute__((unused)) struct rte_mbuf *adb)
 	//rte_mempool_put(message_pool3, adb);
 	rte_ring_enqueue(Ring_modulation_2_CSD, adb);
 	printf("asdkfsk\n");
+	//rte_pktmbuf_free(adb);
 	return 0;
 }
 static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb)
 {
 	int i;
-	int N_CBPS, N_SYM, ScrLength, valid_bits;
-	GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
+	//int N_CBPS, N_SYM, ScrLength, valid_bits;
+	//GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
 	//memcpy((unsigned char *)arg,(unsigned char *)adb, APEP_LEN);
 	//printf("CSD success\n");
 	// printf("sizeof Data_In_CSD %d\n", strlen(adb));
@@ -162,7 +167,7 @@ static int CSD_encode_dpdk (__attribute__((unused)) struct rte_mbuf *adb)
 	}
 
 	//rte_mempool_put(adb->pool, adb);
-	//rte_pktmbuf_free(adb);
+	rte_pktmbuf_free(adb);
 	return 0;
 }
 
@@ -285,8 +290,8 @@ static int GenDataAndScramble_Loop()
 static int GenDataAndScramble_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In) 
 {
 
-			//rte_mempool_put(mbuf_pool, Data_In);
-	printf("GenDataAndScramble_DPDK\n");
+	//rte_mempool_put(mbuf_pool, Data_In);
+	//printf("GenDataAndScramble_DPDK\n");
 	//printf("GenDataAndScramble_DPDK_count = %d\n", GenDataAndScramble_DPDK_count++);
 	GenDataAndScramble_encode_dpdk(Data_In);
 	return 0;
@@ -345,7 +350,7 @@ static int modulate_DPDK(__attribute__((unused)) struct rte_mbuf *Data_In)
 {
 		printf("modulate_DPDK_count = %d\n", modulate_DPDK_count++);
 		modulate_encode_dpdk(Data_In);
-		printf("AAAAAAAAAAAA\n");
+		
 		return 0;
 }
 static int Data_CSD_Loop() 
@@ -406,7 +411,7 @@ main(int argc, char **argv)
 	//initcsdTableForHeLTF();
 	// 初始化函数，计算OFDM符号个数，字节长度
 	//int N_CBPS, N_SYM, ScrLength, valid_bits;
-   // GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
+   	GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
 	///////////////////////////////////////////////////////////////////////////////////
 	//unsigned lcore_id;
 	ret = rte_eal_init(argc, argv);
