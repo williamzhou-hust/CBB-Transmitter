@@ -64,7 +64,6 @@ int BCC_encoder_DPDK_count = 0;
 int modulate_DPDK_count = 0;
 int Data_CSD_DPDK_count = 0;
 int CSD_encode_DPDK_count = 0;
-// ³õÊ¼»¯º¯Êý£¬¼ÆËãOFDM·ûºÅ¸öÊý£¬×Ö½Ú³¤¶È
 int N_CBPS, N_SYM, ScrLength, valid_bits;
 
 static int ReadData(__attribute__((unused)) struct rte_mbuf *Data_In);
@@ -105,7 +104,7 @@ static int ReadData(__attribute__((unused)) struct rte_mbuf *Data)
 	fclose(fp);
 	free(databits);
 	//free(databits_temp);
-	rte_ring_enqueue(Ring_Beforescramble, Data); //First hafe
+	rte_ring_enqueue(Ring_Beforescramble, Data); //First half
 	return 0;
 }
 
@@ -115,7 +114,7 @@ static int GenDataAndScramble_DPDK (__attribute__((unused)) struct rte_mbuf *Dat
 	unsigned char *databits = rte_pktmbuf_mtod(Data_In, unsigned char *);
 	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, MBUF_CACHE_SIZE/2*1024);
 	GenDataAndScramble(data_scramble, ScrLength, databits, valid_bits);	
-	rte_ring_enqueue(Ring_scramble_2_BCC, Data_In); //last hafe
+	rte_ring_enqueue(Ring_scramble_2_BCC, Data_In); //The other half
 	return 0;
 }
 
@@ -126,7 +125,7 @@ static int BCC_encoder_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In)
 	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, MBUF_CACHE_SIZE/2*1024);
 	unsigned char* BCCencodeout = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, 0);
 	BCC_encoder_OPT(data_scramble, ScrLength, N_SYM, &BCCencodeout, CodeLength);
-	rte_ring_enqueue(Ring_BCC_2_modulation, Data_In); //First hafe
+	rte_ring_enqueue(Ring_BCC_2_modulation, Data_In); //First half
 	return 0;
 }
 
@@ -137,7 +136,7 @@ static int modulate_DPDK(__attribute__((unused)) struct rte_mbuf *Data_In)
 	complex32 *subcar_map_data = rte_pktmbuf_mtod_offset(Data_In, complex32 *, MBUF_CACHE_SIZE/2*1024);
 	modulate_mapping(BCCencodeout, &subcar_map_data);
 
-	rte_ring_enqueue(Ring_modulation_2_CSD, Data_In);//Last hafe
+	rte_ring_enqueue(Ring_modulation_2_CSD, Data_In);//The other half
 	return 0;
 }	
 
