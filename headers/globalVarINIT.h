@@ -34,6 +34,11 @@ extern int pilot_index[8];
 extern complex32* P[8];
 extern int* shiftTableForHeLTF[8];
 
+//Preamble and HeLTF
+extern complex32* STF[N_TX];
+extern complex32* LTF[N_TX];
+extern complex32* Sig[N_TX];
+extern complex32* heLTF[N_TX];
 //data
 extern int subcar;
 extern int N_tone;

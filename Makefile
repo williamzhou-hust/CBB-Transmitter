@@ -57,12 +57,12 @@ SRCS-y += ccoding_byte.c
 #SRCS-y += ifft.c ifftShiftandIFFTPreamble.c
 
 SRCS-y += intrinsics_interface_v2.c
-
+SRCS-y += generatePreambleAndHeLTF_csd.c
 SRCS-y += bccInterleaverForSig.c csdForHeLTF.c csdForPreamble.c
 SRCS-y += generateBasicSig.c generateHeLTF_csd.c generateLTF_csd.c
 SRCS-y += generatePreamble_csd.c generateSig_csd.c generateSTF_csd.c
 SRCS-y += MapForSig.c setSigInfo.c
-
+           
 SRCS-y += mcs_table_for_20M.c process_data.c
 SRCS-y += BCC_encoder.c Data_CSD.c GenDataAndScramble.c
 SRCS-y += GenInit.c modulate.c modulate_opt.c PilotAdd_SubcarMap.c

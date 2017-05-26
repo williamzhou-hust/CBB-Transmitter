@@ -64,7 +64,7 @@ int BCC_encoder_DPDK_count = 0;
 int modulate_DPDK_count = 0;
 int Data_CSD_DPDK_count = 0;
 int CSD_encode_DPDK_count = 0;
-// ³õÊ¼»¯º¯Êı£¬¼ÆËãOFDM·ûºÅ¸öÊı£¬×Ö½Ú³¤¶È
+// Â³ÃµÃŠÂ¼Â»Â¯ÂºÂ¯ÃŠÃ½Â£Â¬Â¼Ã†Ã‹Ã£OFDMÂ·Ã»ÂºÃ…Â¸Ã¶ÃŠÃ½Â£Â¬Ã—Ã–Â½ÃšÂ³Â¤Â¶Ãˆ
 int N_CBPS, N_SYM, ScrLength, valid_bits;
 
 static int ReadData(__attribute__((unused)) struct rte_mbuf *Data_In);
@@ -101,7 +101,7 @@ static int ReadData(__attribute__((unused)) struct rte_mbuf *Data)
 	    databits[i]=datatmp&0x000000FF;
 	}
 	memcpy(rte_pktmbuf_mtod(Data,unsigned char *), databits, APEP_LEN_DPDK);
-	//memcpy(databits_temp, databits, APEP_LEN_DPDK);//½«ÎÄ¼ş¶ÁÈ¡Êı¾İ¸´ÖÆ¸øData¼´Ô­Ê¼Êı¾İÁ÷
+	//memcpy(databits_temp, databits, APEP_LEN_DPDK);//Â½Â«ÃÃ„Â¼Ã¾Â¶ÃÃˆÂ¡ÃŠÃ½Â¾ÃÂ¸Â´Ã–Ã†Â¸Ã¸DataÂ¼Â´Ã”Â­ÃŠÂ¼ÃŠÃ½Â¾ÃÃÃ·
 	fclose(fp);
 	free(databits);
 	//free(databits_temp);
@@ -260,17 +260,17 @@ main(int argc, char **argv)
 	const unsigned pool_cache = 32;
 	const unsigned priv_data_sz = 0;
 	int ret;
-	// ÔËĞĞÒ»´ÎµÃµ½preambleºÍHeLTF.
-	//generatePreambleAndHeLTF_csd();
-	// ÔËĞĞÒ»´ÎµÃµ½±ÈÌØ¸ÉÈÅÂë±í¡£
+	// è¿è¡Œä¸€æ¬¡å¾—åˆ°preambleå’ŒHeLTF.
+	generatePreambleAndHeLTF_csd();
+	// è¿è¡Œä¸€æ¬¡å¾—åˆ°æ¯”ç‰¹å¹²æ‰°ç è¡¨ã€‚
 	Creatnewchart();
-	// ÔËĞĞÒ»´ÎµÃµ½BCC±àÂë±í¡£
+	// è¿è¡Œä¸€æ¬¡å¾—åˆ°BCCç¼–ç è¡¨ã€‚
 	init_BCCencode_table();
-	// ÔËĞĞÒ»´ÎµÃµ½Éú³Éµ¼ÆµµÄ·ÖÁ÷½»Ö¯±í
+	// è¿è¡Œä¸€æ¬¡å¾—åˆ°ç”Ÿæˆå¯¼é¢‘çš„åˆ†æµäº¤ç»‡è¡¨
 	initial_streamwave_table();
-	// ÔËĞĞÒ»´ÎµÃµ½CSD±í¡£
+	// è¿è¡Œä¸€æ¬¡å¾—åˆ°CSDè¡¨ã€‚
 	//initcsdTableForHeLTF();
-	// ³õÊ¼»¯º¯Êı£¬¼ÆËãOFDM·ûºÅ¸öÊı£¬×Ö½Ú³¤¶È
+	// åˆå§‹åŒ–å‡½æ•°ï¼Œè®¡ç®—OFDMç¬¦å·ä¸ªæ•°ï¼Œå­—èŠ‚é•¿åº¦
 	//int N_CBPS, N_SYM, ScrLength, valid_bits;
    	GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
 	///////////////////////////////////////////////////////////////////////////////////

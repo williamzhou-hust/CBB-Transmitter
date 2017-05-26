@@ -16,6 +16,11 @@ int	CpLen = 128;//3.2 * SampRate;
 int CodeTypeIsBcc = 1;//is BCC
 char* ChannelMode = "AWGN";
 
+//Preamble and HeLTF
+complex32* STF[N_TX]={0};
+complex32* LTF[N_TX]={0};
+complex32* Sig[N_TX]={0};
+complex32* heLTF[N_TX]={0};
 //data
 int subcar = 256;
 int N_tone = 242;
