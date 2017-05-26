@@ -38,7 +38,8 @@ extern complex32 expComlex32(float phase, int i);
 
 extern void csdForHeLTF(complex32* pStreamBfcsd, complex32* pStreamAfcsd, int NTXindex, int length);
 extern int numberOfHeLTF();
-
+extern void generatePreambleAndHeLTF_csd();
+extern void initcsdTableForHeLTF();
 /*extern void addCPforPreamble(complex32* pAfterIFFT,
                              complex32* pBeforeAddWin,
                              int NTXindex);
