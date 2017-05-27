@@ -100,17 +100,19 @@ static int ReadData(__attribute__((unused)) struct rte_mbuf *Data)
 	    databits[i]=datatmp&0x000000FF;
 	}
 	memcpy(rte_pktmbuf_mtod(Data,unsigned char *), databits, APEP_LEN_DPDK);
-	//memcpy(databits_temp, databits, APEP_LEN_DPDK);//Â½Â«ÃŽÃ„Â¼Ã¾Â¶ÃÃˆÂ¡ÃŠÃ½Â¾ÃÂ¸Â´Ã–Ã†Â¸Ã¸DataÂ¼Â´Ã”Â­ÃŠÂ¼ÃŠÃ½Â¾ÃÃÃ·
+	//memcpy(databits_temp, databits, APEP_LEN_DPDK);
 	fclose(fp);
 	free(databits);
 	//free(databits_temp);
+	printf("Data->buflen = %d\n",Data->buf_len);
+	printf("ReadData_count = %d\n", ReadData_count++);
 	rte_ring_enqueue(Ring_Beforescramble, Data); //First half
 	return 0;
 }
 
 static int GenDataAndScramble_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In) 
 {
-	//printf("GenDataAndScramble_DPDK_count = %d\n", GenDataAndScramble_DPDK_count++);
+	printf("GenDataAndScramble_DPDK_count = %d\n", GenDataAndScramble_DPDK_count++);
 	unsigned char *databits = rte_pktmbuf_mtod(Data_In, unsigned char *);
 	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, MBUF_CACHE_SIZE/2*1024);
 	GenDataAndScramble(data_scramble, ScrLength, databits, valid_bits);	
@@ -121,7 +123,7 @@ static int GenDataAndScramble_DPDK (__attribute__((unused)) struct rte_mbuf *Dat
 
 static int BCC_encoder_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In)
 {
-	//printf("BCC_encoder_DPDK_count = %d\n", BCC_encoder_DPDK_count++);
+	printf("BCC_encoder_DPDK_count = %d\n", BCC_encoder_DPDK_count++);
 	int CodeLength = N_SYM*N_CBPS/N_STS;
 	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, MBUF_CACHE_SIZE/2*1024);
 	unsigned char* BCCencodeout = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, 0);
@@ -158,6 +160,17 @@ static int CSD_encode_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In)
 	for(i=0;i<N_STS;i++){
 		__Data_CSD_aux(&subcar_map_data, N_SYM, &csd_data,i);
 	}
+	//printf("%hd,%hd\n",csd_data[6].real,csd_data[6].imag);
+    
+    //print CSD data
+	FILE *fp=fopen("Data-CSD.txt","w");
+    for(i=0;i<subcar*N_STS*N_SYM;i++)
+    {
+    	fprintf(fp, "(%hd,%hd)\n",csd_data[i].real,csd_data[i].imag);
+    }
+    fclose(fp);
+
+
 
 	//rte_pktmbuf_free(Data_In);
 	//rte_mempool_put(Data_In->pool, Data_In);
