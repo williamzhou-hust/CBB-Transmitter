@@ -50,8 +50,9 @@ VPATH += $(SRCDIR)/process_data/process_datafunction
 VPATH += $(SRCDIR)/typeDef
 VPATH += $(SRCDIR)/VarINIT
 
-# all source are stored in SRCS-y
-SRCS-y := main.c mainbfBCC.c test.c maindpdk.c maindpdk2.c maindpdk3.c
+# all source are stored in SRCS-y                  
+SRCS-y := maindpdk.c maindpdk2.c maindpdk3.c
+#SRCS-y += main.c mainbfBCC.c test.c 
 SRCS-y += ccoding_byte.c
 
 #SRCS-y += ifft.c ifftShiftandIFFTPreamble.c
@@ -63,7 +64,8 @@ SRCS-y += generateBasicSig.c generateHeLTF_csd.c generateLTF_csd.c
 SRCS-y += generatePreamble_csd.c generateSig_csd.c generateSTF_csd.c
 SRCS-y += MapForSig.c setSigInfo.c
            
-SRCS-y += mcs_table_for_20M.c process_data.c
+SRCS-y += mcs_table_for_20M.c
+#SRCS-y += process_data.c
 SRCS-y += BCC_encoder.c Data_CSD.c GenDataAndScramble.c
 SRCS-y += GenInit.c modulate.c modulate_opt.c PilotAdd_SubcarMap.c
 
@@ -83,6 +85,7 @@ CFLAGS += -I$(SRCDIR)/VarINIT
 
 CFLAGS += -D OPTIMIZATION
 CFLAGS += -D AVX2
+CFLAGS += -D DPDK_FRAME
 #CFLAGS += $(WERROR_FLAGS)
 
 #LDLIBS += -L$(subst main,print_abcd,$(RTE_OUTPUT))/lib

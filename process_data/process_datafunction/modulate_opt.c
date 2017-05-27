@@ -266,15 +266,18 @@ void parser_stream_interweave(unsigned char *output,unsigned char **stream_inter
     {
         for(i=0;i<N_STS;i++)
         {
-
             for(j=0;j<TableLength;j++)
             {
-                if(stream_parser_weave_table[i][j]==6002)stream_interweave_dataout[i][j+k*TableLength]=101;
-                else if(stream_parser_weave_table[i][j]==6001)stream_interweave_dataout[i][j+k*TableLength]=100;
-                else if(stream_parser_weave_table[i][j]==6000)stream_interweave_dataout[i][j+k*TableLength]=99;
+                //if(stream_parser_weave_table[i][j]==6002)          stream_interweave_dataout[i][j+k*TableLength]=101;
+                //else if(stream_parser_weave_table[i][j]==6001)  stream_interweave_dataout[i][j+k*TableLength]=100;
+                //else if(stream_parser_weave_table[i][j]==6000)  stream_interweave_dataout[i][j+k*TableLength]=99;
+                if(stream_parser_weave_table[i][j]==6002)          (*stream_interweave_dataout)[i*TableLength*N_SYM + j+k*TableLength]=101;
+                else if(stream_parser_weave_table[i][j]==6001)  (*stream_interweave_dataout)[i*TableLength*N_SYM + j+k*TableLength]=100;
+                else if(stream_parser_weave_table[i][j]==6000)  (*stream_interweave_dataout)[i*TableLength*N_SYM + j+k*TableLength]=99;
                 else
                 {
-                    stream_interweave_dataout[i][j+k*TableLength] = output[stream_parser_weave_table[i][j]+k*N_CBPS];
+                    //stream_interweave_dataout[i][j+k*TableLength] = output[stream_parser_weave_table[i][j]+k*N_CBPS];
+                    (*stream_interweave_dataout)[i*TableLength*N_SYM + j+k*TableLength] = output[stream_parser_weave_table[i][j]+k*N_CBPS];
                 }
             }
         }
@@ -286,14 +289,27 @@ void parser_stream_interweave(unsigned char *output,unsigned char **stream_inter
 void __bi2de_opt(unsigned char **code_out,int mode,int num,int Nov_STS)
 {
       int j,k;
+#ifdef DPDK_FRAME
+      unsigned char rate_type;
+      int N_BPSCS, N_DBPS, N_CBPS, N_ES;
+      mcs_table_for_20M(&rate_type, &N_BPSCS, &N_DBPS, &N_CBPS, &N_ES);
+      int N_service = 16;
+      int N_tail = 6;
+      int N_SYM = ceil(((double)(8*APEP_LEN + N_service + N_tail*N_ES) / (double)N_DBPS));
+     // int mode = N_BPSCS/2;
+      //int num =(N_CBPS/mode/N_STS+pilot_N+zero_N)*N_SYM;
+      unsigned int CodeLength = N_CBPS/N_STS;
+      unsigned int TableLength = CodeLength+pilot_N+zero_N;
+#endif
       int out;
       int pilot_num=0;
       for(j=1;j<=num;j++)
       {
           out = 0;
+#ifndef DPDK_FRAME
           for(k=1;k<=mode;k++)
           {
-              if(code_out[Nov_STS][mode*(j-1-pilot_num)+pilot_num+k-1]==99||
+             if(code_out[Nov_STS][mode*(j-1-pilot_num)+pilot_num+k-1]==99||
                  code_out[Nov_STS][mode*(j-1-pilot_num)+pilot_num+k-1]==100||
                  code_out[Nov_STS][mode*(j-1-pilot_num)+pilot_num+k-1]==101)
               {
@@ -307,6 +323,25 @@ void __bi2de_opt(unsigned char **code_out,int mode,int num,int Nov_STS)
                     out = out + 0;
           }
           code_out[Nov_STS][j-1] = out;
+#else
+          for(k=1;k<=mode;k++)
+          {
+            //stream_interweave_dataout[i] = (unsigned char *)malloc(sizeof(unsigned char)*TableLength*N_SYM);
+             if((*code_out)[Nov_STS*TableLength*N_SYM + mode*(j-1-pilot_num)+pilot_num+k-1]==99||
+                 (*code_out)[Nov_STS*TableLength*N_SYM + mode*(j-1-pilot_num)+pilot_num+k-1]==100||
+                 (*code_out)[Nov_STS*TableLength*N_SYM + mode*(j-1-pilot_num)+pilot_num+k-1]==101)
+              {
+                 out=(*code_out)[Nov_STS*TableLength*N_SYM + mode*(j-1-pilot_num)+pilot_num+k-1];
+                 pilot_num++;
+                 break;
+              }
+              else if((*code_out)[Nov_STS*TableLength*N_SYM + mode*(j-1-pilot_num)+pilot_num+k-1] == 1)
+                    out = out + twice(mode-k);
+              else
+                    out = out + 0;
+          }
+          (*code_out)[Nov_STS*TableLength*N_SYM + j-1] = out;
+#endif
       }
 
 }
@@ -321,6 +356,10 @@ void __Modulation_11ax_opt(unsigned char **code_out, int mode,int num, complex32
     int N_CBPS, N_SYM, ScrLength, valid_bits;
     GenInit(&N_CBPS, &N_SYM, &ScrLength, &valid_bits);
     /////////////////////////////////////////////////////////////
+#ifdef DPDK_FRAME
+      unsigned int CodeLength = N_CBPS/N_STS;
+      unsigned int TableLength = CodeLength+pilot_N+zero_N;
+#endif
     switch(mode)
     {
         case 0: C=QAM1;
@@ -342,6 +381,7 @@ void __Modulation_11ax_opt(unsigned char **code_out, int mode,int num, complex32
                  exit(1);
     }
     int t=0;
+#ifndef DPDK_FRAME
     for(j=1;j<=num;j++)
     {
 
@@ -361,10 +401,35 @@ void __Modulation_11ax_opt(unsigned char **code_out, int mode,int num, complex32
         }
         t++;
     }
+#else
+    for(j=1;j<=num;j++)
+    {
+
+        if((*code_out)[Nov_STS*TableLength*N_SYM + j-1]>16)
+        {
+            //sym_mod[Nov_STS][t]=pilot_type[code_out[Nov_STS][j-1]-99];
+            (*sym_mod)[Nov_STS*subcar*N_SYM + t]=pilot_type[(*code_out)[Nov_STS*TableLength*N_SYM + j-1]-99];
+        }
+        else
+        {
+           real_j = index[(*code_out)[Nov_STS*TableLength*N_SYM + j-1]];
+           imag_j = index[(*code_out)[Nov_STS*TableLength*N_SYM + j]];
+           k = (twice(mode)-imag_j)*twice(mode)+real_j;
+           //sym_mod[Nov_STS][t] = C[k-1];
+           (*sym_mod)[Nov_STS*subcar*N_SYM + t] = C[k-1];
+           j++;
+        }
+        t++;
+    }
+#endif
 
 }
 
+#ifndef DPDK_FRAME  //no  working in  dpdk frame.
 void modulate_mapping(unsigned char *BCC_output, complex32 **subcar_map_data)
+#else
+void modulate_mapping(unsigned char *BCC_output, unsigned char **stream_interweave_dataout, complex32 **subcar_map_data)
+#endif 
 {
 	//printf("use Optmodulate!\n");
 
@@ -381,7 +446,8 @@ void modulate_mapping(unsigned char *BCC_output, complex32 **subcar_map_data)
     unsigned int TableLength = CodeLength+pilot_N+zero_N;
 
     /**< 通过查表生成分流交织后的数据块 */
-    unsigned char *stream_interweave_dataout[N_STS];
+#ifndef DPDK_FRAME 
+   unsigned char *stream_interweave_dataout[N_STS];
     for(i=0;i<N_STS;i++)
     {
         stream_interweave_dataout[i] = (unsigned char *)malloc(sizeof(unsigned char)*TableLength*N_SYM);
@@ -391,6 +457,7 @@ void modulate_mapping(unsigned char *BCC_output, complex32 **subcar_map_data)
             exit(1);
         }
     }
+#endif
 
     parser_stream_interweave(BCC_output, stream_interweave_dataout, streamweave_table);
 
@@ -418,11 +485,13 @@ void modulate_mapping(unsigned char *BCC_output, complex32 **subcar_map_data)
     }
     //modulation_mapping(stream_interweave_dataout, N_SYM, subcar_map_data, Nov_STS) ;
 
+#ifndef  DPDK_FRAME
    for(i=0;i<N_STS;i++)
    {
        free(stream_interweave_dataout[i]);
        stream_interweave_dataout[i] = NULL;
    }
+#endif
 }
 
 #ifdef DEBUGMODULATIONOPT
