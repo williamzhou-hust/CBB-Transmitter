@@ -27,6 +27,8 @@
 #include <cmdline.h>
 #include <rte_mbuf.h>
 
+#include <time.h> 
+
 #include "allHeaders.h"
 
 #define RUNMAINDPDK
@@ -58,13 +60,17 @@ struct rte_mempool *mbuf_pool;
 	
 volatile int quit = 0;
 
-int ReadData_count = 0;
-int GenDataAndScramble_DPDK_count = 0;
-int BCC_encoder_DPDK_count = 0;
-int modulate_DPDK_count = 0;
-int Data_CSD_DPDK_count = 0;
-int CSD_encode_DPDK_count = 0;
+long int ReadData_count = 0;
+long int GenDataAndScramble_DPDK_count = 0;
+long int BCC_encoder_DPDK_count = 0;
+long int modulate_DPDK_count = 0;
+long int Data_CSD_DPDK_count = 0;
+long int CSD_encode_DPDK_count = 0;
 int N_CBPS, N_SYM, ScrLength, valid_bits;
+
+struct timespec time1,time2,time_diff;	/** < Test the running time. >*/
+int time_test_flag = 0;
+struct timespec diff(struct timespec start, struct timespec end);
 
 static int ReadData(__attribute__((unused)) struct rte_mbuf *Data_In);
 static int GenDataAndScramble_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In);
@@ -78,6 +84,19 @@ static int BCC_encoder_Loop();
 static int modulate_Loop();
 static int Data_CSD_Loop();  
 
+struct timespec diff(struct timespec start, struct timespec end)
+{
+    struct  timespec temp;
+
+     if ((end.tv_nsec-start.tv_nsec)<0) {
+         temp.tv_sec = end.tv_sec-start.tv_sec-1;
+         temp.tv_nsec = 1000000000+end.tv_nsec-start.tv_nsec;
+     } else {
+         temp.tv_sec = end.tv_sec-start.tv_sec;
+         temp.tv_nsec = end.tv_nsec-start.tv_nsec;
+     }
+     return temp;
+}
 
 static int ReadData(__attribute__((unused)) struct rte_mbuf *Data) 
 {
@@ -86,6 +105,13 @@ static int ReadData(__attribute__((unused)) struct rte_mbuf *Data)
 	//printf("Data->priv_size = %d\n",Data->priv_size);
 	//printf("ReadData_count = %d\n", ReadData_count++);
 	//printf("Data->data_off = %d\n",Data->data_off);
+	if(time_test_flag==0){
+		time_test_flag = 1;
+		clock_gettime(CLOCK_REALTIME, &time1); //CLOCK_REALTIME:系统实时时间   
+		//CLOCK_MONOTONIC:从系统启动这一刻起开始计时,不受系统时间被用户改变的影响
+		//CLOCK_PROCESS_CPUTIME_ID:本进程到当前代码系统CPU花费的时间
+		//CLOCK_THREAD_CPUTIME_ID:本线程到当前代码系统CPU花费的时间
+	}
 	FILE *fp=fopen("send_din_dec.txt","rt");
 	unsigned char* databits=(unsigned char*)malloc(APEP_LEN_DPDK*sizeof(unsigned char));
 	//unsigned char* databits_temp=(unsigned char*)malloc(APEP_LEN_DPDK*sizeof(unsigned char));
@@ -100,19 +126,17 @@ static int ReadData(__attribute__((unused)) struct rte_mbuf *Data)
 	    databits[i]=datatmp&0x000000FF;
 	}
 	memcpy(rte_pktmbuf_mtod(Data,unsigned char *), databits, APEP_LEN_DPDK);
-	//memcpy(databits_temp, databits, APEP_LEN_DPDK);
+	//memcpy(databits_temp, databits, APEP_LEN_DPDK);//Â½Â«ÃŽÃ„Â¼Ã¾Â¶ÃÃˆÂ¡ÃŠÃ½Â¾ÃÂ¸Â´Ã–Ã†Â¸Ã¸DataÂ¼Â´Ã”Â­ÃŠÂ¼ÃŠÃ½Â¾ÃÃÃ·
 	fclose(fp);
 	free(databits);
 	//free(databits_temp);
-	printf("Data->buflen = %d\n",Data->buf_len);
-	printf("ReadData_count = %d\n", ReadData_count++);
 	rte_ring_enqueue(Ring_Beforescramble, Data); //First half
 	return 0;
 }
 
 static int GenDataAndScramble_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In) 
 {
-	printf("GenDataAndScramble_DPDK_count = %d\n", GenDataAndScramble_DPDK_count++);
+	//printf("GenDataAndScramble_DPDK_count = %d\n", GenDataAndScramble_DPDK_count++);
 	unsigned char *databits = rte_pktmbuf_mtod(Data_In, unsigned char *);
 	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, MBUF_CACHE_SIZE/2*1024);
 	GenDataAndScramble(data_scramble, ScrLength, databits, valid_bits);	
@@ -123,7 +147,7 @@ static int GenDataAndScramble_DPDK (__attribute__((unused)) struct rte_mbuf *Dat
 
 static int BCC_encoder_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In)
 {
-	printf("BCC_encoder_DPDK_count = %d\n", BCC_encoder_DPDK_count++);
+	//printf("BCC_encoder_DPDK_count = %d\n", BCC_encoder_DPDK_count++);
 	int CodeLength = N_SYM*N_CBPS/N_STS;
 	unsigned char *data_scramble = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, MBUF_CACHE_SIZE/2*1024);
 	unsigned char* BCCencodeout = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, 0);
@@ -135,7 +159,7 @@ static int BCC_encoder_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In)
 
 static int modulate_DPDK(__attribute__((unused)) struct rte_mbuf *Data_In)
 {
-	printf("modulate_DPDK_count = %d\n", modulate_DPDK_count++);
+	//printf("modulate_DPDK_count = %ld\n", modulate_DPDK_count++);
 	unsigned char* BCCencodeout = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, 0);
 	unsigned char *stream_interweave_dataout = rte_pktmbuf_mtod_offset(Data_In, unsigned char *, MBUF_CACHE_SIZE/2*1024);
 	//complex32 *subcar_map_data = rte_pktmbuf_mtod_offset(Data_In, complex32 *, MBUF_CACHE_SIZE/2*1024);
@@ -150,7 +174,8 @@ static int modulate_DPDK(__attribute__((unused)) struct rte_mbuf *Data_In)
 static int CSD_encode_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In)
 {
 	int i;
-	printf("CSD_encode_DPDK_count = %d\n", CSD_encode_DPDK_count++);
+	CSD_encode_DPDK_count++;
+	//printf("%ld\n", CSD_encode_DPDK_count++);//CSD_encode_DPDK_count = %ld\n
 	//complex32 *csd_data = rte_pktmbuf_mtod_offset(Data_In, complex32 *, 0);
 	//complex32 *subcar_map_data = rte_pktmbuf_mtod_offset(Data_In, complex32 *, MBUF_CACHE_SIZE/2*1024);
 	complex32 *csd_data = rte_pktmbuf_mtod_offset(Data_In, complex32 *, MBUF_CACHE_SIZE/2*1024);
@@ -160,20 +185,22 @@ static int CSD_encode_DPDK (__attribute__((unused)) struct rte_mbuf *Data_In)
 	for(i=0;i<N_STS;i++){
 		__Data_CSD_aux(&subcar_map_data, N_SYM, &csd_data,i);
 	}
-	//printf("%hd,%hd\n",csd_data[6].real,csd_data[6].imag);
-    
-    //print CSD data
-	FILE *fp=fopen("Data-CSD.txt","w");
-    for(i=0;i<subcar*N_STS*N_SYM;i++)
-    {
-    	fprintf(fp, "(%hd,%hd)\n",csd_data[i].real,csd_data[i].imag);
-    }
-    fclose(fp);
 
+	if(CSD_encode_DPDK_count > 100000)
+	{
+		quit = 1;
 
+		clock_gettime(CLOCK_REALTIME, &time2);
+		time_diff = diff(time1,time2);
+		printf("CSD_encode_DPDK_count = %ld\n", CSD_encode_DPDK_count-1);
+		printf("Start time # %.24s %ld Nanoseconds \n",ctime(&time1.tv_sec), time1.tv_nsec);
+		printf("Stop time # %.24s %ld Nanoseconds \n",ctime(&time2.tv_sec), time2.tv_nsec);
+		printf("Running time # %ld.%ld Seconds \n",time_diff.tv_sec, time_diff.tv_nsec);
+		//printf("%.24s %ld Nanoseconds \n", ctime(&ts.tv_sec), ts.tv_nsec); 
+	}
 
 	//rte_pktmbuf_free(Data_In);
-	//rte_mempool_put(Data_In->pool, Data_In);
+	rte_mempool_put(Data_In->pool, Data_In);
 	return 0;
 }
 
@@ -267,8 +294,6 @@ static int ReadData_Loop()
 	return 0;
 }
 
-
-
 int
 main(int argc, char **argv)
 {
@@ -314,7 +339,7 @@ main(int argc, char **argv)
 		rte_exit(EXIT_FAILURE, "Problem getting sending ring\n");
 	/* Creates a new mempool in memory to hold the mbufs. */
 	mbuf_pool = rte_pktmbuf_pool_create("MBUF_POOL", NUM_MBUFS,
-		MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE, rte_socket_id());
+		MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE*16, rte_socket_id());
 
 	if (mbuf_pool == NULL)
 		rte_exit(EXIT_FAILURE, "Cannot create mbuf pool\n");
