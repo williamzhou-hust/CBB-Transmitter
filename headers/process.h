@@ -33,12 +33,13 @@ extern void csdForPreamble(complex32* pStreamBfcsd,
                            complex32* pStreamAfcsd,
                            int NTXindex, int length);
 
-extern int csTableForPreamble(int Ntxindex);
+extern int tcsTableForPreamble(int Ntxindex);//change to tcd
 extern complex32 expComlex32(float phase, int i);
 
 extern void csdForHeLTF(complex32* pStreamBfcsd, complex32* pStreamAfcsd, int NTXindex, int length);
 extern int numberOfHeLTF();
-
+extern void generatePreambleAndHeLTF_csd();
+extern void initcsdTableForHeLTF();
 /*extern void addCPforPreamble(complex32* pAfterIFFT,
                              complex32* pBeforeAddWin,
                              int NTXindex);
@@ -55,12 +56,24 @@ extern void ccodedot11_encode (unsigned int numbytes,
 		                       unsigned char *inPtr,
 		                       unsigned char *outPtr,
                                unsigned char puncturing);
+#ifdef OPTIMIZATION
+extern void init_BCCencode_table();
+extern void check_BCCcode(unsigned int numbytes,
+		   unsigned char *inPtr,
+		   unsigned char *outPtr,
+		   unsigned char initstate,
+		   unsigned char puncturing);
+#endif
 
 extern void bccInterleaverForSig(unsigned char* sigAfterBCC, int length);
 
 extern void MapForSig(unsigned char* sigAfterBCC,
                       complex32* sigAfterMap,
                       int length);
+
+//AVX2
+/*use __m256i*/
+extern void Mult_complex32Vector_2(complex32* a, complex32* b, complex32* dest /*int lengthOfVector = 16*/);
 
 //for print
 extern void printForCpmlex(complex rp);

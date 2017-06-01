@@ -15,6 +15,8 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
     //////////////////////////////////////////////////////////////////////////////////
     unsigned char *code_out[N_STS];
     int CodeLength = N_SYM*N_CBPS/N_STS;
+
+	#ifndef OPTIMIZATION
     for(i=0;i<N_STS;i++)
     {
         code_out[i] = (unsigned char *)malloc(sizeof(unsigned char)*CodeLength);
@@ -26,10 +28,17 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
     }
 
     BCC_encoder(data_scramble, ScrLength, N_SYM, code_out, CodeLength);
+	#else
+	//printf("use OPT BCC!\n");
+	//unsigned char* BCCencodeout;
+    unsigned char *BCCencodeout = (unsigned char *)malloc(sizeof(unsigned char)*(CodeLength*N_STS+24));  //24为防止指针越界
+    BCC_encoder_OPT(data_scramble, ScrLength, N_SYM, &BCCencodeout, CodeLength);
+	#endif
 
     free(data_scramble);
     data_scramble = NULL;
     ///////////////////////////////////////////////////////////////////////////////////
+	#ifndef OPTIMIZATION
     complex32 *sym_mod[N_STS];
     for(i=0;i<N_STS;i++)
     {
@@ -47,6 +56,7 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
         free(code_out[i]);
         code_out[i] = NULL;
     }
+	#endif
     /////////////////////////////////////////////////////////////////////////////
     complex32 *subcar_map_data[N_STS];                                           //为插入导频后的数据申请空间
     for(i=0;i<N_STS;i++)
@@ -58,14 +68,20 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
             exit(1);
         }
     }
-
+	#ifndef OPTIMIZATION
     PilotAdd_SubcarMap(sym_mod, N_SYM, subcar_map_data);
-
     for(i=0;i<N_STS;i++)
     {
         free(sym_mod[i]);
         sym_mod[i] = NULL;
     }
+	#endif
+
+	#ifdef OPTIMIZATION
+	modulate_mapping(BCCencodeout,subcar_map_data);
+	free(BCCencodeout);
+	#endif
+
     //////////////////////////////////////////////////////////////////////////////
 /*    complex32 *csd_data[N_STS];                                           //为CSD后的数据申请空间
     for(i=0;i<N_STS;i++)
@@ -78,8 +94,13 @@ void GenerateData(unsigned char *databits, complex32 **csd_data)
         }
     }
 */
+	#ifndef AVX2
     Data_CSD(subcar_map_data, N_SYM, csd_data);
-
+	#else
+	for(i=0;i<N_STS;i++){
+		__Data_CSD_aux(subcar_map_data, N_SYM, csd_data,i);
+	}
+	#endif
     for(i=0;i<N_STS;i++)
     {
         free(subcar_map_data[i]);

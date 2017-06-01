@@ -1,0 +1,2 @@
+const char net_qede_pmd_info[] __attribute__((used)) = "PMD_INFO_STRING= {\"name\" : \"net_qede\", \"pci_ids\" : [[4215, 5684, 65535, 65535],[4215, 5673, 65535, 65535],[4215, 5684, 65535, 65535],[4215, 5718, 65535, 65535],[4215, 5700, 65535, 65535] ]}";
+const char net_qede_vf_pmd_info[] __attribute__((used)) = "PMD_INFO_STRING= {\"name\" : \"net_qede_vf\", \"pci_ids\" : [[4215, 5680, 65535, 65535],[4215, 5732, 65535, 65535] ]}";

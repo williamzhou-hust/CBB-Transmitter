@@ -33,6 +33,7 @@
 */
 //#include "defs.h"
 #include "../headers/process.h"
+#include "../headers/globalVarINIT.h"
 
 
 unsigned short gdot11[] = { 0133, 0171 }; // {A,B}
@@ -253,7 +254,109 @@ void ccodedot11_init_inv(void)
   }
 }
 
+#ifdef OPTIMIZATION
+//Optimization for search from the table
+/*struct BCCStruct{
+unsigned char output[16];
+unsigned char endstate;
+}BCCTable[256][128];*/
+BCCStruct_t BCCTable[256][128];
 
+void init_BCCencode_table()
+{
+    ccodedot11_init();
+    int i;
+    unsigned  char  startstate,end =0;
+    unsigned  char  shiftbit,out=0;
+    unsigned c=0;
+    unsigned  char  *dataptr;
+    for( i=0;i<256;i++)
+    {
+      for(startstate=0;startstate<128;startstate++)
+      {
+         end=startstate;
+         dataptr=BCCTable[c][startstate].output;
+         for (shiftbit = 0; shiftbit<8;shiftbit++)
+         {
+	        end>>= 1;
+	        if ((c&(1<<shiftbit)) != 0)
+	        {
+	           end |= 64;
+	        }
+
+	     out = ccodedot11_table[end];
+         *dataptr++ = out  & 1;
+	     *dataptr++ = (out>>1)&1;
+         }
+         BCCTable[c][startstate].endstate=end;
+       }
+       c++;
+      }
+
+}
+
+void check_BCCcode(unsigned int numbytes,
+		   unsigned char *inPtr,
+		   unsigned char *outPtr,
+		   unsigned char initstate,
+		   unsigned char puncturing)
+{
+    int j;
+    unsigned char c;
+    int bit_index=0;
+    while(numbytes-->0)
+    {
+      switch (puncturing) {   //mode-0 1/2; mode-1 2/3; mode-2 3/4; mode-3 5/6
+      case 0:  //rate 1/2
+         c=*inPtr++;
+         for(j=0;j<16;j++)
+           *outPtr++=BCCTable[c][initstate].output[j];
+           initstate=BCCTable[c][initstate].endstate;
+      break;
+      case 1:   //rate  3/4
+         c=*inPtr++;
+         for(j=0;j<16;j++)
+         {
+            if (bit_index<2)
+	        *outPtr++ = BCCTable[c][initstate].output[j];
+	        j++;
+	        if (bit_index!=1)
+            *outPtr++ = BCCTable[c][initstate].output[j];
+            bit_index=(bit_index==2)?0:(bit_index+1);
+         }
+         initstate=BCCTable[c][initstate].endstate;
+       break;
+       case 2:  //rate 2/3
+         c=*inPtr++;
+         for(j=0;j<16;j++)
+         {
+            *outPtr++=BCCTable[c][initstate].output[j];
+            j++;
+            if (bit_index==0)
+            *outPtr++ = BCCTable[c][initstate].output[j];
+            bit_index=(bit_index==0)?1:0;
+         }
+         initstate=BCCTable[c][initstate].endstate;
+       break;
+       case 5:   //rate  5/6
+          c=*inPtr++;
+          for(j=0;j<16;j++)
+          {
+             if (bit_index<2||bit_index==3)
+	         *outPtr++ = BCCTable[c][initstate].output[j];
+	         j++;
+	         if (bit_index!=1&&bit_index!=3)
+	         *outPtr++ = BCCTable[c][initstate].output[j];
+	         bit_index=(bit_index==4)?0:(bit_index+1);
+	      }
+	      initstate=BCCTable[c][initstate].endstate;
+	   break;
+       default:
+	   break;
+       }
+    }
+}
+#endif
 
 /*****************************************************************/
 /**

@@ -1,6 +1,7 @@
 #ifndef PROCESS_DATA
 #define PROCESS_DATA
-#include "../allHeaders.h"
+//#include "../allHeaders.h"
+#include "commonStructure.h"
 
 #define twice(N) (1<<(N))
 
@@ -16,11 +17,23 @@ extern void GenDataAndScramble(unsigned char *data_scramble, int ScrLength, unsi
 
 //BCC编码
 extern void BCC_encoder(unsigned char *data_scramble, int ScrLength, int N_SYM, unsigned char **code_out, int CodeLength);
+#ifdef OPTIMIZATION
+extern void Creatnewchart();
+extern void BCC_encoder_OPT(unsigned char *data_scramble, int ScrLength, int N_SYM, unsigned char **code_out, int CodeLength);
+#endif
 //调制函数
 extern void modulate(unsigned char **code_out , int BCC_length, int N_SYM, complex32 **sym_mod, int *NumSampEffect );
+extern void initial_streamwave_table();
+#ifndef DPDK_FRAME  //no  working in  dpdk frame.
+void modulate_mapping(unsigned char *BCC_output, complex32 **subcar_map_data);
+#else
+void modulate_mapping(unsigned char *BCC_output, unsigned char **stream_interweave_dataout, complex32 **subcar_map_data);
+#endif 
 //插入导频零频
 extern void PilotAdd_SubcarMap(complex32 **sym_mod, int N_SYM, complex32 **subcar_map_data);
 //CSD
 extern void Data_CSD(complex32 **subcar_map_data, int N_SYM, complex32 **csd_data);
-
+#ifdef AVX2
+extern void __Data_CSD_aux(complex32 **subcar_map_data, int N_SYM, complex32 **csd_data,int NTXindex);//maybe use for multi pthread
+#endif
 #endif // PROCESS_DATA
